@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleRunner
+namespace ICFPC2015.ConsoleRunner
 {
     class Program
     {

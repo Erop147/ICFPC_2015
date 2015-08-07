@@ -17,7 +17,7 @@ clearrunner: release
 release:
 	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(SOLUTION)
 
-clean:
+clean: clearrunner
 	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(SOLUTION) /t:Clean
 
 .SUFFIXES:
