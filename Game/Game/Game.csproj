@@ -48,8 +48,10 @@
     <Compile Include="Logic\CellState.cs" />
     <Compile Include="Logic\Command.cs" />
     <Compile Include="Logic\Game.cs" />
+    <Compile Include="Logic\GameStepResult.cs" />
     <Compile Include="Logic\GameUnit.cs" />
     <Compile Include="Logic\Point.cs" />
+    <Compile Include="Logic\StepResult.cs" />
     <Compile Include="Logic\Unit.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
