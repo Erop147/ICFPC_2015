@@ -1,4 +1,4 @@
-﻿namespace Game.Logic
+﻿namespace ICFPC2015.Game.Logic
 {
     public enum Command
     {

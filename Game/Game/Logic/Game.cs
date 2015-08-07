@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Game.Logic
+namespace ICFPC2015.Game.Logic
 {
     public class Game
     {
@@ -79,6 +79,7 @@ namespace Game.Logic
             {
                 throw new Exception("Current game unit is null");
             }
+
             if (!IsValid(Current))
             {
                 throw new Exception("Current game unit is not valid, new step is impossible");
@@ -89,6 +90,8 @@ namespace Game.Logic
             {
                 return Result(Current, StepResult.Lock);
             }
+
+            throw new NotImplementedException();
         }
 
         private GameStepResult Result(GameUnit gameUnit, StepResult result)

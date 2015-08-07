@@ -1,5 +1,5 @@
 ﻿using System;
-using Game.Logic;
+using ICFPC2015.Game.Logic;
 using NUnit.Framework;
 
 namespace Game.Tests
