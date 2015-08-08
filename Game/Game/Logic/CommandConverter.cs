@@ -1,19 +1,18 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 
 namespace ICFPC2015.GameLogic.Logic
 {
     public static class CommandConverter
     {
-        private static readonly List<Tuple<string, Command>> CommandMappings = new List<Tuple<string, Command>>()
+        private static readonly Dictionary<Command, string> CommandMappings = new Dictionary<Command, string>()
             {
-                new Tuple<string, Command>("p'!.03", Command.MoveWest),
-                new Tuple<string, Command>("bcefy2", Command.MoveEast),
-                new Tuple<string, Command>("aghij4", Command.MoveSouthWest),
-                new Tuple<string, Command>("lmno 5", Command.MoveSouthEast),
-                new Tuple<string, Command>("dqrvz1", Command.TurnClockWise),
-                new Tuple<string, Command>("kstuwx", Command.TurnCounterClockWise),
+                {Command.MoveWest, "p'!.03"},
+                {Command.MoveEast, "bcefy2"},
+                {Command.MoveSouthWest, "aghij4"},
+                {Command.MoveSouthEast, "lmno 5"},
+                {Command.TurnClockWise, "dqrvz1"},
+                {Command.TurnCounterClockWise, "kstuwx"},
             };
         private static IDictionary<char, Command> commandDictionary;
         private static IDictionary<char, Command> CommandDictionary
@@ -23,7 +22,7 @@ namespace ICFPC2015.GameLogic.Logic
                 return commandDictionary ??
                        (commandDictionary =
                         CommandMappings.SelectMany(
-                            mapping => mapping.Item1.Select(x => new {Key = x, Value = mapping.Item2}))
+                            mapping => mapping.Value.Select(x => new {Key = x, Value = mapping.Key}))
                                        .ToDictionary(x => x.Key, x => x.Value));
             }
         }
@@ -31,6 +30,11 @@ namespace ICFPC2015.GameLogic.Logic
         public static Command Convert(char command)
         {
             return CommandDictionary[command];
+        }
+
+        public static char CovertToAnyChar(Command command)
+        {
+            return CommandMappings[command].First();
         }
     }
 }
