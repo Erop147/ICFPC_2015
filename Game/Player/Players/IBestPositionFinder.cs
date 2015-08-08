@@ -4,6 +4,6 @@ namespace ICFPC2015.Player.Players
 {
     public interface IBestPositionFinder
     {
-        UnitPosition FindBest(UnitPosition[] positions, Game game);
+        GameUnit FindBest(GameUnit[] gameUnits, Game game);
     }
 }

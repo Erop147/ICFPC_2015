@@ -5,19 +5,19 @@ namespace ICFPC2015.Player.Players
 {
     public class PaverPositionFinder : IBestPositionFinder
     {
-        public UnitPosition FindBest(UnitPosition[] positions, Game game)
+        public GameUnit FindBest(GameUnit[] positions, Game game)
         {
             return positions
                 .Select(x =>
                     new
                     {
-                        Position = x,
-                        Profit = GetScore(x, game)
+                        GameUnit = x,
+                        Profit = GetScore(x.UnitPosition, game)
                     })
                 .OrderByDescending(x => x.Profit.BusyRows)
                 .ThenByDescending(x => x.Profit.DiverScore + x.Profit.ReachableCount * game.Board.Height)
                 .First()
-                .Position;
+                .GameUnit;
         }
 
         private class Profit

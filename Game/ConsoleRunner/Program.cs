@@ -22,6 +22,7 @@ namespace ICFPC2015.ConsoleRunner
         {
             players = new[]
             {
+//                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomPositionFinder()),
                 new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomLeftPositionFinder()),
 //                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new PaverPositionFinder()),
             };
