@@ -10,9 +10,8 @@ namespace ICFPC2015.Tests.Tests
         [Test]
         public void TestRead()
         {
-            var store = new MagicWordsStore();
-            Console.WriteLine(string.Join(" ", store.Words));
-            Assert.That(store.Words.Length > 0);
+            Console.WriteLine(string.Join(" ", MagicWordsStore.Words));
+            Assert.That(MagicWordsStore.Words.Length > 0);
         }
     }
 }

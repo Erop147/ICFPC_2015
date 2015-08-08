@@ -5,6 +5,9 @@ namespace ICFPC2015.GameLogic.Logic
 {
     public struct Game
     {
+        public int ProblemId { get; set; }
+        public long Seed { get; set; }
+
         public readonly Unit[] UnitsSequence;
         public int CurrentUnitNumber { get; set; }
         public Board Board { get; private set; }
@@ -13,7 +16,7 @@ namespace ICFPC2015.GameLogic.Logic
         public int LastUnitLinesCleared { get; private set; }
         public int Score { get; private set; }
 
-        public Game(Board board, GameUnit current, Unit[] unitsSequence, int currentUnitNumber, int lastUnitLinesCleared, int score) 
+        public Game(Board board, GameUnit current, Unit[] unitsSequence, int currentUnitNumber, int lastUnitLinesCleared, int score, int problemId, long seed)
             : this()
         {
             Board = board;
@@ -22,6 +25,8 @@ namespace ICFPC2015.GameLogic.Logic
             CurrentUnitNumber = currentUnitNumber;
             LastUnitLinesCleared = lastUnitLinesCleared;
             Score = score;
+            ProblemId = problemId;
+            Seed = seed;
         }
 
         public GameStepResult TrySpawnNew()
@@ -91,7 +96,7 @@ namespace ICFPC2015.GameLogic.Logic
                 var lockedCells = Current.GetAbsolutePoints();
                 var updateResult = Board.Place(lockedCells).Update();
                 var additionalScore = CalculateScore(LastUnitLinesCleared, updateResult.RowsCleaned, Current.Unit.Points.Length);
-                var gameWithNewUnit = new Game(updateResult.NewBoard, null, UnitsSequence, CurrentUnitNumber + 1, updateResult.RowsCleaned, Score + additionalScore);
+                var gameWithNewUnit = new Game(updateResult.NewBoard, null, UnitsSequence, CurrentUnitNumber + 1, updateResult.RowsCleaned, Score + additionalScore, ProblemId, Seed);
                 return gameWithNewUnit.TrySpawnNew();
             }
             return MoveCurrent(newGameUnit);
