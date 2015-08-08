@@ -12,6 +12,7 @@ namespace ICFPC2015.GameLogic.Logic
         public int CurrentUnitNumber { get; set; }
         public Board Board { get; private set; }
         public GameUnit Current { get; private set; }
+        public GameState State { get; private set; }
 
         public int LastUnitLinesCleared { get; private set; }
         public int Score { get; private set; }
@@ -29,7 +30,7 @@ namespace ICFPC2015.GameLogic.Logic
             Seed = seed;
         }
 
-        public GameStepResult TrySpawnNew()
+        public Game TrySpawnNew()
         {
             if (Current != null)
             {
@@ -64,21 +65,10 @@ namespace ICFPC2015.GameLogic.Logic
 
         public bool IsValid(GameUnit gameUnit)
         {
-            foreach (var point in gameUnit.GetAbsolutePoints())
-            {
-                if (!Board.InField(point))
-                {
-                    return false;
-                }
-                if (Board.Field[point.Row][point.Col] == CellState.Busy)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return Board.IsValid(gameUnit);
         }
 
-        public GameStepResult TryMakeStep(Command command)
+        public Game TryMakeStep(Command command)
         {
             if (Current == null)
             {
@@ -109,23 +99,24 @@ namespace ICFPC2015.GameLogic.Logic
             return points + lineBonus;
         }
 
-        private GameStepResult SpawnedNew(GameUnit gameUnit)
+        private Game SpawnedNew(GameUnit gameUnit)
         {
-            var game = this;
-            game.Current = gameUnit;
-            return new GameStepResult(game, StepResult.NewIsSpawned);
+            Current = gameUnit;
+            State = GameState.NewIsSpawned;
+            return this;
         }
 
-        private GameStepResult MoveCurrent(GameUnit gameUnit)
+        private Game MoveCurrent(GameUnit gameUnit)
         {
-            var game = this;
-            game.Current = gameUnit;
-            return new GameStepResult(game, StepResult.Ok);
+            Current = gameUnit;
+            State = GameState.Ok;
+            return this;
         }
 
-        private GameStepResult GameOver()
+        private Game GameOver()
         {
-            return new GameStepResult(this, StepResult.GameOver);
+            State = GameState.GameOver;
+            return this;
         }
     }
 }

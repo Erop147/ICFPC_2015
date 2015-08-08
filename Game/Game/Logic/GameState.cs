@@ -1,6 +1,6 @@
 namespace ICFPC2015.GameLogic.Logic
 {
-    public enum StepResult
+    public enum GameState
     {
         Ok,
         NewIsSpawned,

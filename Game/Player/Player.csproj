@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6E2369E3-F419-419A-9994-20294B8A8CA3}</ProjectGuid>
+    <ProjectGuid>{F0A9A654-5BE0-49E2-AA60-4C05388A7F12}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ICFPC2015.GameLogic</RootNamespace>
-    <AssemblyName>GameLogic</AssemblyName>
+    <RootNamespace>ICFPC2015.Player</RootNamespace>
+    <AssemblyName>Player</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,14 +32,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\Assemblies\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,35 +47,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logic\Board.cs" />
-    <Compile Include="Logic\BoardUpdateResult.cs" />
-    <Compile Include="Logic\CellState.cs" />
-    <Compile Include="Logic\Command.cs" />
-    <Compile Include="Logic\CommandConverter.cs" />
-    <Compile Include="Logic\Game.cs" />
-    <Compile Include="Logic\GameBuilder.cs" />
-    <Compile Include="Logic\GameUnit.cs" />
-    <Compile Include="Logic\Input\Input.cs" />
-    <Compile Include="Logic\Input\InputCell.cs" />
-    <Compile Include="Logic\Input\InputReader.cs" />
-    <Compile Include="Logic\Input\InputUnit.cs" />
-    <Compile Include="Logic\MagicWordsStore.cs" />
-    <Compile Include="Logic\Output\Output.cs" />
-    <Compile Include="Logic\Output\OutputWriter.cs" />
-    <Compile Include="Logic\Point.cs" />
-    <Compile Include="Logic\RandomGenerator.cs" />
-    <Compile Include="Logic\GameState.cs" />
-    <Compile Include="Logic\Unit.cs" />
-    <Compile Include="Logic\UnitPosition.cs" />
+    <Compile Include="Implementation\GreedyPowerWordCommandStringGenerator.cs" />
+    <Compile Include="Implementation\ICommandStringGenerator.cs" />
+    <Compile Include="Implementation\ReachableStatesGetter.cs" />
+    <Compile Include="Players\DummyBottomLeftPlayer.cs" />
+    <Compile Include="Players\IPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Implementation\" />
+    <ProjectReference Include="..\Game\GameLogic.csproj">
+      <Project>{6e2369e3-f419-419a-9994-20294b8a8ca3}</Project>
+      <Name>GameLogic</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="words.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

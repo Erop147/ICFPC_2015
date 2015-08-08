@@ -8,7 +8,7 @@
         public UnitPosition(Point pivotLocation, int rotationCount) : this()
         {
             PivotLocation = pivotLocation;
-            RotationCount = rotationCount;
+            RotationCount = (rotationCount % 6 + 6) % 6;
         }
 
         public UnitPosition Clone()

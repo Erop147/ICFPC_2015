@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using ICFPC2015.GameLogic.Logic;
 using NUnit.Framework;
 
-namespace ICFPC2015.Tests.Tests
+namespace ICFPC2015.Tests.Tests.GameLogic
 {
     [TestFixture]
     public class BoardTest
