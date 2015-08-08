@@ -13,7 +13,7 @@ namespace ICFPC2015.GameLogic.Logic
         {
             using (var reader = new StreamReader("words.txt"))
             {
-                var words = reader.ReadToEnd().Split(new [] { " ", "\n", "\r\n", "\t" }, StringSplitOptions.RemoveEmptyEntries);
+                var words = reader.ReadToEnd().Split(new [] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                 Words = words;
             }
         }
