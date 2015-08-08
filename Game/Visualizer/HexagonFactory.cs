@@ -46,7 +46,9 @@ namespace ICFPC2015.Visualizer
                 : (isCurrentUnitPoint ? Hexagon.UnitColor : Hexagon.DefaultColor);
             var radius = isCurrentUnitPivot ? multiplier : 0;
 
-            return new Hexagon(point1, point2, point3, point4, point5, point6, center, 2 * multiplier, color, radius);
+            var text = string.Format("{0};{1}", x, y);
+
+            return new Hexagon(point1, point2, point3, point4, point5, point6, center, 2 * multiplier, color, radius, text, multiplier);
         }
 
         private int Fix(int y)

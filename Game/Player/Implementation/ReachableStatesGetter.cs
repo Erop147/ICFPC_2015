@@ -7,24 +7,24 @@ namespace ICFPC2015.Player.Implementation
 {
     public static class ReachableStatesGetter
     {
-        public static UnitPosition[] Get(Board board, GameUnit unit, bool onlyLocked, HashSet<UnitPosition> usedPositions = null)
+        public static GameUnit[] Get(Board board, GameUnit unit, bool onlyLocked, HashSet<GameUnit> usedPositions = null)
         {
-            var newlyUsedPositions = new HashSet<UnitPosition>();
-            var lockedPositions = onlyLocked ? new HashSet<UnitPosition>() : null;
-            Dfs(board, unit, newlyUsedPositions, usedPositions ?? new HashSet<UnitPosition>(), lockedPositions);
+            var newlyUsedPositions = new HashSet<GameUnit>();
+            var lockedPositions = onlyLocked ? new HashSet<GameUnit>() : null;
+            Dfs(board, unit, newlyUsedPositions, usedPositions ?? new HashSet<GameUnit>(), lockedPositions);
 
             return onlyLocked ? lockedPositions.ToArray() : newlyUsedPositions.ToArray();
         }
 
-        private static void Dfs(Board board, GameUnit unit, HashSet<UnitPosition> newlyUsedPositions, HashSet<UnitPosition> previouslyUsedPositions, HashSet<UnitPosition> lockedPositions)
+        private static void Dfs(Board board, GameUnit unit, HashSet<GameUnit> newlyUsedPositions, HashSet<GameUnit> previouslyUsedPositions, HashSet<GameUnit> lockedPositions)
         {
-            newlyUsedPositions.Add(unit.UnitPosition);
+            newlyUsedPositions.Add(unit);
 
             foreach (var command in Enum.GetValues(typeof(Command)).Cast<Command>())
             {
                 var nextUnit = unit.MakeStep(command);
-                if (!previouslyUsedPositions.Contains(nextUnit.UnitPosition) &&
-                    !newlyUsedPositions.Contains(nextUnit.UnitPosition))
+                if (!previouslyUsedPositions.Contains(nextUnit) &&
+                    !newlyUsedPositions.Contains(nextUnit))
                 {
                     if (board.IsValid(nextUnit))
                     {
@@ -32,7 +32,7 @@ namespace ICFPC2015.Player.Implementation
                     }
                     else if (lockedPositions != null)
                     {
-                        lockedPositions.Add(unit.UnitPosition);
+                        lockedPositions.Add(unit);
                     }
                 }
             }

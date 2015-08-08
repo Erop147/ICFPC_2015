@@ -26,11 +26,11 @@ namespace ICFPC2015.Visualizer
                         var cell = game.Board.Field[y][x];
                         var isLocked = cell == CellState.Busy;
 
-                        var isCurrentUnitPoint = IsCurrentUnitPoint(game.Current.GetAbsolutePoints(), x, y);
-                        var isCurrentUnitPivot = game.Current.UnitPosition.PivotLocation.Equals(y, x);
+                        var isCurrentUnitPoint = game.Current != null && IsCurrentUnitPoint(game.Current.GetAbsolutePoints(), x, y);
+                        var isCurrentUnitPivot = game.Current != null && game.Current.UnitPosition.PivotLocation.Equals(y, x);
 
                         var hexagon = hexagonFactory.Create(x, y, isLocked, isCurrentUnitPoint, isCurrentUnitPivot);
-                        DrawHexagon(hexagon, graphics, borderPen, unitBrush, lockedBrush);
+                        DrawHexagon(hexagon, graphics, borderPen, unitBrush, lockedBrush, x, y);
                     }
                 }
             }
@@ -38,7 +38,7 @@ namespace ICFPC2015.Visualizer
             return boardImage;
         }
 
-        private void DrawHexagon(Hexagon hexagon, Graphics graphics, Pen borderPen, Brush unitBrush, Brush lockedBrush)
+        private void DrawHexagon(Hexagon hexagon, Graphics graphics, Pen borderPen, Brush unitBrush, Brush lockedBrush, int x, int y)
         {
             if (hexagon.HasColor)
             {
@@ -53,6 +53,10 @@ namespace ICFPC2015.Visualizer
             graphics.DrawLine(borderPen, hexagon.Point5, hexagon.Point6);
             graphics.DrawLine(borderPen, hexagon.Point6, hexagon.Point1);
 
+            if (!string.IsNullOrEmpty(hexagon.Text))
+            {
+                graphics.DrawString(hexagon.Text, new Font(FontFamily.GenericMonospace, hexagon.FontSize), borderPen.Brush, hexagon.Point6.X, hexagon.Point6.Y);
+            }
 
             if (hexagon.HasCircle)
             {

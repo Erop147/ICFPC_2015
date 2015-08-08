@@ -8,7 +8,7 @@ namespace ICFPC2015.Player.Implementation
 {
     public class GreedyPowerWordCommandStringGenerator : ICommandStringGenerator
     {
-        public string Generate(Board board, GameUnit unit, UnitPosition finishPosition)
+        public string Generate(Board board, GameUnit unit, GameUnit finishPosition)
         {
             var stringBuilder = new StringBuilder();
             var words =
@@ -17,23 +17,24 @@ namespace ICFPC2015.Player.Implementation
                         .Cast<Command>()
                         .Select(x => CommandConverter.CovertToAnyChar(x).ToString()))
                         .ToArray();
-            var usedPositions = new HashSet<UnitPosition>();
-            while (!unit.UnitPosition.Equals(finishPosition))
+            var usedPositions = new HashSet<GameUnit>();
+            while (!unit.Equals(finishPosition))
             {
                 foreach (var powerWord in words.OrderByDescending(x => x.Length))
                 {
-                    var newlyUsedPositions = new HashSet<UnitPosition>();
+                    var newlyUsedPositions = new HashSet<GameUnit>();
                     var currentUnit = unit;
                     var fail = false;
                     for (var i = 0; i < powerWord.Length; ++i)
                     {
                         var command = powerWord[i];
-                        newlyUsedPositions.Add(currentUnit.UnitPosition);
+                        newlyUsedPositions.Add(currentUnit);
                         var nextUnit = currentUnit.MakeStep(CommandConverter.Convert(command));
                         var locked = !board.IsValid(nextUnit);
-                        if (newlyUsedPositions.Contains(nextUnit.UnitPosition) ||
-                            usedPositions.Contains(nextUnit.UnitPosition) ||
-                            (locked && i < powerWord.Length - 1))
+                        if (newlyUsedPositions.Contains(nextUnit) ||
+                            usedPositions.Contains(nextUnit) ||
+                            (locked && i < powerWord.Length - 1) ||
+                            (locked && !nextUnit.UnitPosition.Equals(finishPosition)))
                         {
                             fail = true;
                             break;
@@ -43,7 +44,7 @@ namespace ICFPC2015.Player.Implementation
                             currentUnit = nextUnit;
                         }
                     }
-                    var allUsedPositions = new HashSet<UnitPosition>(usedPositions.Union(newlyUsedPositions));
+                    var allUsedPositions = new HashSet<GameUnit>(usedPositions.Union(newlyUsedPositions));
                     if (!fail && ReachableStatesGetter.Get(board, currentUnit, false, allUsedPositions).Contains(finishPosition))
                     {
                         unit = currentUnit;
@@ -51,6 +52,14 @@ namespace ICFPC2015.Player.Implementation
                         stringBuilder.Append(powerWord);
                         break;
                     }
+                }
+            }
+            foreach (var command in Enum.GetValues(typeof(Command)).Cast<Command>())
+            {
+                if (!board.IsValid(unit.MakeStep(command)))
+                {
+                    stringBuilder.Append(CommandConverter.CovertToAnyChar(command));
+                    break;
                 }
             }
             return stringBuilder.ToString();
