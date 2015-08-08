@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", "{6E2369E3-F419-419A-9994-20294B8A8CA3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLogic", "Game\GameLogic.csproj", "{6E2369E3-F419-419A-9994-20294B8A8CA3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{5B5D6444-8960-4EEA-AB49-BD89CF5E7E97}"
 EndProject

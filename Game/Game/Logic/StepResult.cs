@@ -1,4 +1,4 @@
-namespace ICFPC2015.Game.Logic
+namespace ICFPC2015.GameLogic.Logic
 {
     public enum StepResult
     {
