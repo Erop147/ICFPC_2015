@@ -35,6 +35,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Assemblies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,6 +55,11 @@
     <Compile Include="Logic\GameBuilder.cs" />
     <Compile Include="Logic\GameStepResult.cs" />
     <Compile Include="Logic\GameUnit.cs" />
+    <Compile Include="Logic\Input\Input.cs" />
+    <Compile Include="Logic\Input\InputCell.cs" />
+    <Compile Include="Logic\Input\InputReader.cs" />
+    <Compile Include="Logic\Input\InputUnit.cs" />
+    <Compile Include="Logic\MagicWordsStore.cs" />
     <Compile Include="Logic\Point.cs" />
     <Compile Include="Logic\RandomGenerator.cs" />
     <Compile Include="Logic\StepResult.cs" />
@@ -61,6 +69,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Implementation\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="words.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
