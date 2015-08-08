@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Game.Logic
+namespace ICFPC2015.Game.Logic
 {
     public struct Unit
     {

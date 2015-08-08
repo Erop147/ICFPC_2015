@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Game.Logic
+namespace ICFPC2015.Game.Logic
 {
     public class RandomGenerator
     {

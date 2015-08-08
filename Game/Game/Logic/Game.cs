@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Game.Logic
+namespace ICFPC2015.Game.Logic
 {
     public struct Game
     {
@@ -74,6 +74,7 @@ namespace Game.Logic
             {
                 throw new Exception("Current game unit is null");
             }
+
             if (!IsValid(Current))
             {
                 throw new Exception("Current game unit is not valid, new step is impossible");
