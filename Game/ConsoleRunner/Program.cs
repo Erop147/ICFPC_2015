@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using ICFPC2015.GameLogic.Logic;
 using ICFPC2015.GameLogic.Logic.Output;
+using ICFPC2015.Player.Implementation;
+using ICFPC2015.Player.Players;
 
 namespace ICFPC2015.ConsoleRunner
 {
@@ -9,12 +14,18 @@ namespace ICFPC2015.ConsoleRunner
     {
         private static TimeSpan timeLimit;
         private static int memoryLimit;
-        private static List<string> filenames;
-        private static List<string> powerWords;
+        private static readonly List<string> filenames = new List<string>();
+        private static readonly List<string> powerWords = new List<string>();
         private static IPlayer[] players;
 
         static void Main(string[] args)
         {
+            players = new[]
+            {
+                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomLeftPositionFinder()),
+                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new PaverPositionFinder()),
+            };
+
             for (int i = 0; i < args.Length; i ++)
             {
                 if (args[i] == "-f")
@@ -46,14 +57,16 @@ namespace ICFPC2015.ConsoleRunner
                 foreach (var game in games)
                 {
                     var best = -1;
-                    var answer = string.Empty;
-                    for (int i = 0; i < players.Length; i ++)
+                    var commands = string.Empty;
+
+                    var playGameTasks = players.Select(player => Play(game, player)).ToArray();
+                    for (int i = 0; i < playGameTasks.Length; i++)
                     {
-                        var playResult = players[i].Play(game);
+                        var playResult = playGameTasks[i].Result;
                         if (playResult.Score > best)
                         {
                             best = playResult.Score;
-                            answer = playResult.Answer;
+                            commands = playResult.Commands;
                         }
                     }
 
@@ -62,7 +75,7 @@ namespace ICFPC2015.ConsoleRunner
                         tag = "push push",
                         seed = game.Seed,
                         problemId = game.ProblemId,
-                        solution = answer
+                        solution = commands
                     });
                 }
             }
@@ -71,15 +84,9 @@ namespace ICFPC2015.ConsoleRunner
             Console.WriteLine(result);
         }
 
-        public interface IPlayer
+        private static Task<PlayedGameInfo> Play(Game game, IPlayer player)
         {
-            PlayResult Play(Game game);
+            return Task.Run(() => player.Play(game));
         }
-    }
-
-    public class PlayResult
-    {
-        public string Answer { get; set; }
-        public int Score { get; set; }
     }
 }
