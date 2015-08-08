@@ -13,6 +13,7 @@ namespace ICFPC2015.GameLogic.Logic
                 {Command.MoveSouthEast, "lmno 5"},
                 {Command.TurnClockWise, "dqrvz1"},
                 {Command.TurnCounterClockWise, "kstuwx"},
+                {Command.Empty, "\t\n\r"},
             };
         private static IDictionary<char, Command> commandDictionary;
         private static IDictionary<char, Command> CommandDictionary
