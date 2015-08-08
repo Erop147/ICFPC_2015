@@ -11,7 +11,8 @@ namespace ICFPC2015.GameLogic.Logic
 
         static MagicWordsStore()
         {
-            using (var reader = new StreamReader("words.txt"))
+            var path = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "words.txt");
+            using (var reader = new StreamReader(path))
             {
                 var words = reader.ReadToEnd().Split(new [] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                 Words = words;
