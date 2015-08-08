@@ -54,7 +54,7 @@ namespace ICFPC2015.ConsoleRunner
             foreach (var filename in filenames)
             {
                 var games = new GameBuilder().Build(filename);
-                foreach (var game in games.Take(1))
+                foreach (var game in games)
                 {
                     var best = -1;
                     var commands = string.Empty;

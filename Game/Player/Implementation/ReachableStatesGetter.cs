@@ -20,7 +20,7 @@ namespace ICFPC2015.Player.Implementation
         {
             newlyUsedPositions.Add(unit);
 
-            foreach (var command in Enum.GetValues(typeof(Command)).Cast<Command>())
+            foreach (var command in Enum.GetValues(typeof(Command)).Cast<Command>().Except(new [] { Command.Empty }))
             {
                 var nextUnit = unit.MakeStep(command);
                 if (!previouslyUsedPositions.Contains(nextUnit) &&
