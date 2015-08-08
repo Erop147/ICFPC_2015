@@ -33,7 +33,7 @@ namespace ICFPC2015.Player.Players
 
                 foreach (var command in commandString)
                 {
-                    game = game.TryMakeStep(CommandConverter.Convert(command));
+                    game = game.TryMakeStep(command);
                 }
             }
 
