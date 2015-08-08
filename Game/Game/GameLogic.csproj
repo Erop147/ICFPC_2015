@@ -51,9 +51,9 @@
     <Compile Include="Logic\BoardUpdateResult.cs" />
     <Compile Include="Logic\CellState.cs" />
     <Compile Include="Logic\Command.cs" />
+    <Compile Include="Logic\CommandConverter.cs" />
     <Compile Include="Logic\Game.cs" />
     <Compile Include="Logic\GameBuilder.cs" />
-    <Compile Include="Logic\GameStepResult.cs" />
     <Compile Include="Logic\GameUnit.cs" />
     <Compile Include="Logic\Input\Input.cs" />
     <Compile Include="Logic\Input\InputCell.cs" />
@@ -62,7 +62,7 @@
     <Compile Include="Logic\MagicWordsStore.cs" />
     <Compile Include="Logic\Point.cs" />
     <Compile Include="Logic\RandomGenerator.cs" />
-    <Compile Include="Logic\StepResult.cs" />
+    <Compile Include="Logic\GameState.cs" />
     <Compile Include="Logic\Unit.cs" />
     <Compile Include="Logic\UnitPosition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

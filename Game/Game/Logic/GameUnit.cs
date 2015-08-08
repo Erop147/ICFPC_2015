@@ -71,5 +71,10 @@ namespace ICFPC2015.GameLogic.Logic
                 }
             }
         }
+
+        public Point BottomLeft()
+        {
+            return GetAbsolutePoints().OrderByDescending(x => x.Row).ThenBy(x => x.Col).First();
+        }
     }
 }

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using ICFPC2015.GameLogic.Logic.Input;
-using Newtonsoft.Json;
 using NUnit.Framework;
+using Newtonsoft.Json;
 
-namespace ICFPC2015.Tests.Tests
+namespace ICFPC2015.Tests.Tests.GameLogic
 {
     [TestFixture]
     public class InputReaderTest

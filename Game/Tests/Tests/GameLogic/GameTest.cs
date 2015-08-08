@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
 using ICFPC2015.GameLogic.Logic;
 using NUnit.Framework;
 
-namespace ICFPC2015.Tests.Tests
+namespace ICFPC2015.Tests.Tests.GameLogic
 {
     [TestFixture]
     public class GameTest
@@ -104,7 +104,7 @@ namespace ICFPC2015.Tests.Tests
 
             var actual = game.TrySpawnNew();
 
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace ICFPC2015.Tests.Tests
 
             var actual = game.TrySpawnNew();
 
-            Assert.AreEqual(StepResult.GameOver, actual.Result);
+            Assert.AreEqual(GameState.GameOver, actual.State);
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace ICFPC2015.Tests.Tests
 
             var actual = game.TrySpawnNew();
 
-            Assert.AreEqual(StepResult.GameOver, actual.Result);
+            Assert.AreEqual(GameState.GameOver, actual.State);
         }
 
         [Test]
@@ -149,19 +149,19 @@ namespace ICFPC2015.Tests.Tests
             var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0);
 
             var actual = game.TrySpawnNew();
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.Game.TryMakeStep(Command.MoveWest);
-            Assert.AreEqual(StepResult.Ok, actual.Result);
+            actual = actual.TryMakeStep(Command.MoveWest);
+            Assert.AreEqual(GameState.Ok, actual.State);
 
-            actual = actual.Game.TryMakeStep(Command.MoveWest);
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
+            actual = actual.TryMakeStep(Command.MoveWest);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
             Assert.AreEqual(string.Join(Environment.NewLine, new[]
             {
                 "*..",
                 "...",
                 "..."
-            }), actual.Game.Board.ToString());
+            }), actual.Board.ToString());
         }
 
         [Test]
@@ -178,19 +178,19 @@ namespace ICFPC2015.Tests.Tests
             var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0);
 
             var actual = game.TrySpawnNew();
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.Game.TryMakeStep(Command.MoveEast);
-            Assert.AreEqual(StepResult.Ok, actual.Result);
+            actual = actual.TryMakeStep(Command.MoveEast);
+            Assert.AreEqual(GameState.Ok, actual.State);
 
-            actual = actual.Game.TryMakeStep(Command.MoveEast);
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
+            actual = actual.TryMakeStep(Command.MoveEast);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
             Assert.AreEqual(string.Join(Environment.NewLine, new[]
             {
                 "..*",
                 "...",
                 "..."
-            }), actual.Game.Board.ToString());
+            }), actual.Board.ToString());
         }
 
         [Test]
@@ -207,26 +207,26 @@ namespace ICFPC2015.Tests.Tests
             var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0);
 
             var actual = game.TrySpawnNew();
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.Game.TryMakeStep(Command.MoveSouthWest);
-            Assert.AreEqual(StepResult.Ok, actual.Result);
-            Assert.AreEqual(0, actual.Game.Current.UnitPosition.PivotLocation.Col);
-            Assert.AreEqual(1, actual.Game.Current.UnitPosition.PivotLocation.Row);
+            actual = actual.TryMakeStep(Command.MoveSouthWest);
+            Assert.AreEqual(GameState.Ok, actual.State);
+            Assert.AreEqual(0, actual.Current.UnitPosition.PivotLocation.Col);
+            Assert.AreEqual(1, actual.Current.UnitPosition.PivotLocation.Row);
 
-            actual = actual.Game.TryMakeStep(Command.MoveSouthWest);
-            Assert.AreEqual(StepResult.Ok, actual.Result);
-            Assert.AreEqual(0, actual.Game.Current.UnitPosition.PivotLocation.Col);
-            Assert.AreEqual(2, actual.Game.Current.UnitPosition.PivotLocation.Row);
+            actual = actual.TryMakeStep(Command.MoveSouthWest);
+            Assert.AreEqual(GameState.Ok, actual.State);
+            Assert.AreEqual(0, actual.Current.UnitPosition.PivotLocation.Col);
+            Assert.AreEqual(2, actual.Current.UnitPosition.PivotLocation.Row);
 
-            actual = actual.Game.TryMakeStep(Command.MoveSouthWest);
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
+            actual = actual.TryMakeStep(Command.MoveSouthWest);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
             Assert.AreEqual(string.Join(Environment.NewLine, new[]
             {
                 "...",
                 "...",
                 "*.."
-            }), actual.Game.Board.ToString());
+            }), actual.Board.ToString());
         }
 
         [Test]
@@ -243,26 +243,26 @@ namespace ICFPC2015.Tests.Tests
             var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0);
 
             var actual = game.TrySpawnNew();
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.Game.TryMakeStep(Command.MoveSouthEast);
-            Assert.AreEqual(StepResult.Ok, actual.Result);
-            Assert.AreEqual(1, actual.Game.Current.UnitPosition.PivotLocation.Col);
-            Assert.AreEqual(1, actual.Game.Current.UnitPosition.PivotLocation.Row);
+            actual = actual.TryMakeStep(Command.MoveSouthEast);
+            Assert.AreEqual(GameState.Ok, actual.State);
+            Assert.AreEqual(1, actual.Current.UnitPosition.PivotLocation.Col);
+            Assert.AreEqual(1, actual.Current.UnitPosition.PivotLocation.Row);
 
-            actual = actual.Game.TryMakeStep(Command.MoveSouthEast);
-            Assert.AreEqual(StepResult.Ok, actual.Result);
-            Assert.AreEqual(2, actual.Game.Current.UnitPosition.PivotLocation.Col);
-            Assert.AreEqual(2, actual.Game.Current.UnitPosition.PivotLocation.Row);
+            actual = actual.TryMakeStep(Command.MoveSouthEast);
+            Assert.AreEqual(GameState.Ok, actual.State);
+            Assert.AreEqual(2, actual.Current.UnitPosition.PivotLocation.Col);
+            Assert.AreEqual(2, actual.Current.UnitPosition.PivotLocation.Row);
 
-            actual = actual.Game.TryMakeStep(Command.MoveSouthEast);
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
+            actual = actual.TryMakeStep(Command.MoveSouthEast);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
             Assert.AreEqual(string.Join(Environment.NewLine, new[]
             {
                 "...",
                 "...",
                 "..*"
-            }), actual.Game.Board.ToString());
+            }), actual.Board.ToString());
         }
 
         [Test]
@@ -279,17 +279,17 @@ namespace ICFPC2015.Tests.Tests
             var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0);
 
             var actual = game.TrySpawnNew();
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.Game.TryMakeStep(Command.TurnClockWise);
-            Assert.AreEqual(StepResult.Ok, actual.Result);
-            Assert.AreEqual(2, actual.Game.Current.GetAbsolutePoints().First().Col);
-            Assert.AreEqual(0, actual.Game.Current.GetAbsolutePoints().First().Row);
+            actual = actual.TryMakeStep(Command.TurnClockWise);
+            Assert.AreEqual(GameState.Ok, actual.State);
+            Assert.AreEqual(2, actual.Current.GetAbsolutePoints().First().Col);
+            Assert.AreEqual(0, actual.Current.GetAbsolutePoints().First().Row);
 
-            actual = actual.Game.TryMakeStep(Command.TurnClockWise);
-            Assert.AreEqual(StepResult.Ok, actual.Result);
-            Assert.AreEqual(2, actual.Game.Current.GetAbsolutePoints().First().Col);
-            Assert.AreEqual(1, actual.Game.Current.GetAbsolutePoints().First().Row);
+            actual = actual.TryMakeStep(Command.TurnClockWise);
+            Assert.AreEqual(GameState.Ok, actual.State);
+            Assert.AreEqual(2, actual.Current.GetAbsolutePoints().First().Col);
+            Assert.AreEqual(1, actual.Current.GetAbsolutePoints().First().Row);
         }
 
         [Test]
@@ -306,17 +306,17 @@ namespace ICFPC2015.Tests.Tests
             var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0);
 
             var actual = game.TrySpawnNew();
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.Game.TryMakeStep(Command.TurnCounterClockWise);
-            Assert.AreEqual(StepResult.Ok, actual.Result);
-            Assert.AreEqual(0, actual.Game.Current.GetAbsolutePoints().First().Col);
-            Assert.AreEqual(1, actual.Game.Current.GetAbsolutePoints().First().Row);
+            actual = actual.TryMakeStep(Command.TurnCounterClockWise);
+            Assert.AreEqual(GameState.Ok, actual.State);
+            Assert.AreEqual(0, actual.Current.GetAbsolutePoints().First().Col);
+            Assert.AreEqual(1, actual.Current.GetAbsolutePoints().First().Row);
 
-            actual = actual.Game.TryMakeStep(Command.TurnCounterClockWise);
-            Assert.AreEqual(StepResult.Ok, actual.Result);
-            Assert.AreEqual(1, actual.Game.Current.GetAbsolutePoints().First().Col);
-            Assert.AreEqual(2, actual.Game.Current.GetAbsolutePoints().First().Row);
+            actual = actual.TryMakeStep(Command.TurnCounterClockWise);
+            Assert.AreEqual(GameState.Ok, actual.State);
+            Assert.AreEqual(1, actual.Current.GetAbsolutePoints().First().Col);
+            Assert.AreEqual(2, actual.Current.GetAbsolutePoints().First().Row);
         }
 
         [Test]
@@ -333,17 +333,17 @@ namespace ICFPC2015.Tests.Tests
             var game = new Game(board, null, new[] { unit, unit2 }, 0, 12, 200);
 
             var actual = game.TrySpawnNew();
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.Game.TryMakeStep(Command.MoveSouthEast);
-            Assert.AreEqual(StepResult.Ok, actual.Result);
-            Assert.AreEqual(1, actual.Game.Current.GetAbsolutePoints().First().Col);
-            Assert.AreEqual(1, actual.Game.Current.GetAbsolutePoints().First().Row);
+            actual = actual.TryMakeStep(Command.MoveSouthEast);
+            Assert.AreEqual(GameState.Ok, actual.State);
+            Assert.AreEqual(1, actual.Current.GetAbsolutePoints().First().Col);
+            Assert.AreEqual(1, actual.Current.GetAbsolutePoints().First().Row);
 
-            actual = actual.Game.TryMakeStep(Command.MoveSouthEast);
-            Assert.AreEqual(StepResult.NewIsSpawned, actual.Result);
-            Assert.AreEqual(2, actual.Game.LastUnitLinesCleared);
-            Assert.AreEqual(832, actual.Game.Score);
+            actual = actual.TryMakeStep(Command.MoveSouthEast);
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
+            Assert.AreEqual(2, actual.LastUnitLinesCleared);
+            Assert.AreEqual(832, actual.Score);
         }
     }
 }

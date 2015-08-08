@@ -50,13 +50,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\BoardTest.cs" />
-    <Compile Include="Tests\InputReaderTest.cs" />
-    <Compile Include="Tests\GameTest.cs" />
-    <Compile Include="Tests\MagicWordsStoreTest.cs" />
+    <Compile Include="Tests\GameLogic\BoardTest.cs" />
+    <Compile Include="Tests\GameLogic\CommandConverterTest.cs" />
+    <Compile Include="Tests\GameLogic\GameTest.cs" />
+    <Compile Include="Tests\GameLogic\GameUnitTest.cs" />
+    <Compile Include="Tests\GameLogic\InputReaderTest.cs" />
+    <Compile Include="Tests\GameLogic\MagicWordsStoreTest.cs" />
+    <Compile Include="Tests\GameLogic\PointTest.cs" />
+    <Compile Include="Tests\GameLogic\RandomGeneratorTest.cs" />
     <Compile Include="Tests\Player\ReachableStatesGetterTest.cs" />
-    <Compile Include="Tests\PointTest.cs" />
-    <Compile Include="Tests\RandomGeneratorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Game\GameLogic.csproj">

@@ -47,7 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementation\GreedyPowerWordCommandStringGenerator.cs" />
+    <Compile Include="Implementation\ICommandStringGenerator.cs" />
     <Compile Include="Implementation\ReachableStatesGetter.cs" />
+    <Compile Include="Players\DummyBottomLeftPlayer.cs" />
+    <Compile Include="Players\IPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
