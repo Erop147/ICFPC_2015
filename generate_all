@@ -1,0 +1,13 @@
+#!/bin/bash
+
+rm -rf Problem_Results
+mkdir Problem_Results
+
+for filename in Problems/*.json; do
+	echo "STARTED $PWD/$filename at $(date)"
+	echo "STARTED $PWD/$filename at $(date)" >> Problem_Results/_log.txt
+	# ./play_icfp2015 -f "$PWD/$filename"
+	echo "$PWD/$filename" > "Problem_Results/$filename"
+	echo "ENDED $PWD/$filename at $(date)"
+	echo "ENDED $PWD/$filename at $(date)" >> Problem_Results/_log.txt
+done
