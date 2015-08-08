@@ -72,6 +72,10 @@ namespace ICFPC2015.GameLogic.Logic
         public Game TryMakeStep(char ch)
         {
             var command = CommandConverter.Convert(ch);
+            if (command == Command.Empty)
+            {
+                return this;
+            }
             if (Current == null)
             {
                 throw new Exception("Current game unit is null");

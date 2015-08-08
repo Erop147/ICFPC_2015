@@ -22,8 +22,8 @@ namespace ICFPC2015.ConsoleRunner
         {
             players = new[]
             {
-                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomLeftPositionFinder()),
-//                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new PaverPositionFinder()),
+//                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomLeftPositionFinder()),
+                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new PaverPositionFinder()),
             };
 
             for (int i = 0; i < args.Length; i ++)
@@ -54,7 +54,7 @@ namespace ICFPC2015.ConsoleRunner
             foreach (var filename in filenames)
             {
                 var games = new GameBuilder().Build(filename);
-                foreach (var game in games)
+                foreach (var game in games.Take(1))
                 {
                     var best = -1;
                     var commands = string.Empty;
@@ -72,7 +72,7 @@ namespace ICFPC2015.ConsoleRunner
 
                     outputs.Add(new Output
                     {
-                        tag = "push push",
+                        tag = "paver",
                         seed = game.Seed,
                         problemId = game.ProblemId,
                         solution = commands
