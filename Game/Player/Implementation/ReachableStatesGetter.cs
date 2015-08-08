@@ -10,12 +10,13 @@ namespace ICFPC2015.Player.Implementation
         public static UnitPosition[] Get(Board board, GameUnit unit, bool onlyLocked, HashSet<UnitPosition> usedPositions = null)
         {
             var newlyUsedPositions = new HashSet<UnitPosition>();
-            Dfs(board, unit, newlyUsedPositions, usedPositions ?? new HashSet<UnitPosition>(), onlyLocked ? new HashSet<UnitPosition>() : null);
+            var lockedPositions = onlyLocked ? new HashSet<UnitPosition>() : null;
+            Dfs(board, unit, newlyUsedPositions, usedPositions ?? new HashSet<UnitPosition>(), lockedPositions);
 
-            return newlyUsedPositions.ToArray();
+            return onlyLocked ? lockedPositions.ToArray() : newlyUsedPositions.ToArray();
         }
 
-        private static void Dfs(Board board, GameUnit unit, HashSet<UnitPosition> newlyUsedPositions, HashSet<UnitPosition> previouslyUsedPositions, HashSet<UnitPosition> lockedPositions = null)
+        private static void Dfs(Board board, GameUnit unit, HashSet<UnitPosition> newlyUsedPositions, HashSet<UnitPosition> previouslyUsedPositions, HashSet<UnitPosition> lockedPositions)
         {
             newlyUsedPositions.Add(unit.UnitPosition);
 
@@ -27,7 +28,7 @@ namespace ICFPC2015.Player.Implementation
                 {
                     if (board.IsValid(nextUnit))
                     {
-                        Dfs(board, nextUnit, newlyUsedPositions, previouslyUsedPositions);
+                        Dfs(board, nextUnit, newlyUsedPositions, previouslyUsedPositions, lockedPositions);
                     }
                     else if (lockedPositions != null)
                     {

@@ -31,13 +31,16 @@ namespace ICFPC2015.Player.Implementation
                         newlyUsedPositions.Add(currentUnit.UnitPosition);
                         var nextUnit = currentUnit.MakeStep(CommandConverter.Convert(command));
                         var locked = !board.IsValid(nextUnit);
+                        if (newlyUsedPositions.Contains(nextUnit.UnitPosition) ||
+                            usedPositions.Contains(nextUnit.UnitPosition) ||
+                            (locked && i < powerWord.Length - 1))
+                        {
+                            fail = true;
+                            break;
+                        }
                         if (!locked)
                         {
                             currentUnit = nextUnit;
-                        }
-                        if (locked && i < powerWord.Length - 1)
-                        {
-                            fail = true;
                         }
                     }
                     var allUsedPositions = new HashSet<UnitPosition>(usedPositions.Union(newlyUsedPositions));
