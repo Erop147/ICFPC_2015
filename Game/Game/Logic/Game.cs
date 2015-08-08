@@ -36,7 +36,7 @@ namespace ICFPC2015.GameLogic.Logic
             }
             var unit = UnitsSequence[CurrentUnitNumber];
             var pivot = GetPivotLocation(unit);
-            var gameUnit = new GameUnit(unit, pivot, 0);
+            var gameUnit = new GameUnit(unit, new UnitPosition(pivot, 0));
 
             if (!IsValid(gameUnit))
             {
