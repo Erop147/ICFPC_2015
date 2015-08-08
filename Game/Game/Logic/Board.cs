@@ -82,9 +82,14 @@ namespace ICFPC2015.GameLogic.Logic
             var newBoard = Clone();
             foreach (var point in points)
             {
-                newBoard.Field[point.Row][point.Col] = CellState.Busy;
+                newBoard.Fill(point);
             }
             return newBoard;
+        }
+
+        public void Fill(Point point)
+        {
+            Field[point.Row][point.Col] = CellState.Busy;
         }
 
         public BoardUpdateResult Update()
