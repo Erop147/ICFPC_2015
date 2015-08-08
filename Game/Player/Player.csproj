@@ -55,6 +55,7 @@
     <Compile Include="Players\DummyGreedyPlayer.cs" />
     <Compile Include="Players\IBestPositionFinder.cs" />
     <Compile Include="Players\IPlayer.cs" />
+    <Compile Include="Players\PlayedGameInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

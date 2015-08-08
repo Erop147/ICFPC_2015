@@ -15,7 +15,7 @@ namespace ICFPC2015.Player.Players
             this.bestPositionFinder = bestPositionFinder;
         }
 
-        public string Play(Game game)
+        public PlayedGameInfo Play(Game game)
         {
             var stringBuilder = new StringBuilder();
 
@@ -34,7 +34,7 @@ namespace ICFPC2015.Player.Players
                 }
             }
 
-            return stringBuilder.ToString();
+            return new PlayedGameInfo(stringBuilder.ToString(), game.Score);
         }
     }
 }
