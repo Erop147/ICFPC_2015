@@ -60,6 +60,7 @@
     <Compile Include="Logic\Input\InputReader.cs" />
     <Compile Include="Logic\Input\InputUnit.cs" />
     <Compile Include="Logic\MagicWordsStore.cs" />
+    <Compile Include="Logic\Output\Output.cs" />
     <Compile Include="Logic\Point.cs" />
     <Compile Include="Logic\RandomGenerator.cs" />
     <Compile Include="Logic\StepResult.cs" />
