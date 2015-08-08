@@ -46,6 +46,19 @@ namespace ICFPC2015.GameLogic.Logic
             return new Point(newCol, newRow);
         }
 
+        public Point Move(Point p, Point a)
+        {
+            var newRow = Row + (a.Row - p.Row);
+            var newCol = 2 * Col + 2 * (a.Col - p.Col) + (Mod2(Row) + Mod2(a.Row) - Mod2(p.Row));
+            if (newCol % 2 != 0)
+            {
+                newCol -= Mod2(newCol);
+            }
+            newCol /= 2;
+
+            return new Point(newCol, newRow);
+        }
+
         public bool Equals(int row, int col)
         {
             return Row == row && Col == col;

@@ -58,13 +58,10 @@ namespace ICFPC2015.GameLogic.Logic
 
         public Point GetPivotLocation(Unit unit)
         {
-            var row = - unit.Points.Min(x => x.Row);
             var minCol = unit.Points.Min(x => x.Col);
             var maxCol = unit.Points.Max(x => x.Col);
             var colShift = (Board.Width - (maxCol - minCol + 1)) / 2;
-            var col = colShift - minCol;
-
-            return new Point(col, row) - unit.PivotPoint;
+            return unit.PivotPoint.Move(new Point(minCol, 0), new Point(colShift, 0));
         }
 
         public bool IsValid(GameUnit gameUnit)

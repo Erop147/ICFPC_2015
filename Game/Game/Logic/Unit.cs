@@ -4,19 +4,18 @@ namespace ICFPC2015.GameLogic.Logic
 {
     public struct Unit
     {
-        public static Unit Create(Point pivotPoint, Point[] points)
-        {
-            return new Unit
-            {
-                Points = points,
-                PivotPoint = pivotPoint
-            };
-        }
-
         public Unit(Point[] points, Point pivotPoint) : this()
         {
-            Points = points;
-            PivotPoint = pivotPoint;
+            var row = points.Min(x => x.Row);
+            var minCol = points.Min(x => x.Col);
+
+            Points = points.Select(p => p.Move(new Point(minCol, row), new Point(0, 0))).ToArray();
+            PivotPoint = pivotPoint.Move(new Point(minCol, row), new Point(0, 0));
+        }
+
+        public static Unit Create(Point pivotPoint, Point[] points)
+        {
+            return new Unit(points, pivotPoint);
         }
 
         public Unit Clone()

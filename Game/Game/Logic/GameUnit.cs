@@ -16,7 +16,7 @@ namespace ICFPC2015.GameLogic.Logic
 
         public Point[] GetAbsolutePoints()
         {
-            return Unit.Points.Select(p => p.Rotate(UnitPosition.RotationCount, Unit.PivotPoint) + Unit.PivotPoint + UnitPosition.PivotLocation).ToArray();
+            return Unit.Points.Select(p => p.Rotate(UnitPosition.RotationCount, Unit.PivotPoint).Move(Unit.PivotPoint, UnitPosition.PivotLocation)).ToArray();
         }
 
         public GameUnit Clone()

@@ -9,7 +9,7 @@ namespace ICFPC2015.GameLogic.Logic.Input
 
         public Unit ToUnit()
         {
-            return Unit.Create(pivot.ToPoint(), members.Select(x => x.ToPoint()).ToArray());
+            return new Unit(members.Select(x => x.ToPoint()).ToArray(), pivot.ToPoint());
         }
     }
 }
