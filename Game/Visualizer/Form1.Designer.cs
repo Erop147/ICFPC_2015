@@ -45,6 +45,7 @@
             this.scoresLabel = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.stateLabel = new System.Windows.Forms.Label();
+            this.stopExecuteCommandButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.boardBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -171,7 +172,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(37, 780);
+            this.label4.Location = new System.Drawing.Point(28, 802);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(106, 25);
             this.label4.TabIndex = 12;
@@ -181,7 +182,7 @@
             // 
             this.scoresLabel.AutoSize = true;
             this.scoresLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.scoresLabel.Location = new System.Drawing.Point(149, 768);
+            this.scoresLabel.Location = new System.Drawing.Point(140, 790);
             this.scoresLabel.Name = "scoresLabel";
             this.scoresLabel.Size = new System.Drawing.Size(36, 37);
             this.scoresLabel.TabIndex = 13;
@@ -190,26 +191,38 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(33, 835);
+            this.label5.Location = new System.Drawing.Point(28, 845);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(68, 25);
+            this.label5.Size = new System.Drawing.Size(86, 25);
             this.label5.TabIndex = 14;
-            this.label5.Text = "State:";
+            this.label5.Text = "STATE:";
             // 
             // stateLabel
             // 
             this.stateLabel.AutoSize = true;
             this.stateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.stateLabel.Location = new System.Drawing.Point(158, 826);
+            this.stateLabel.Location = new System.Drawing.Point(153, 836);
             this.stateLabel.Name = "stateLabel";
             this.stateLabel.Size = new System.Drawing.Size(0, 37);
             this.stateLabel.TabIndex = 15;
+            // 
+            // stopExecuteCommandButton
+            // 
+            this.stopExecuteCommandButton.Enabled = false;
+            this.stopExecuteCommandButton.Location = new System.Drawing.Point(28, 723);
+            this.stopExecuteCommandButton.Name = "stopExecuteCommandButton";
+            this.stopExecuteCommandButton.Size = new System.Drawing.Size(428, 54);
+            this.stopExecuteCommandButton.TabIndex = 16;
+            this.stopExecuteCommandButton.Text = "STOP";
+            this.stopExecuteCommandButton.UseVisualStyleBackColor = true;
+            this.stopExecuteCommandButton.Click += new System.EventHandler(this.stopExecuteCommandButton_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2154, 1473);
+            this.Controls.Add(this.stopExecuteCommandButton);
             this.Controls.Add(this.stateLabel);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.scoresLabel);
@@ -227,7 +240,7 @@
             this.Controls.Add(this.openGameButton);
             this.Controls.Add(this.boardBox);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Visualizer";
             ((System.ComponentModel.ISupportInitialize)(this.boardBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -253,5 +266,6 @@
         private System.Windows.Forms.Label scoresLabel;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label stateLabel;
+        private System.Windows.Forms.Button stopExecuteCommandButton;
     }
 }

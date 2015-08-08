@@ -11,7 +11,9 @@ namespace ICFPC2015.Visualizer
         public Hexagon(
             Point point1,Point point2,Point point3,
             Point point4,Point point5,Point point6,
-            Point circleStart, int circleHeight, Color color, int circleRadius)
+            Point circleStart, int circleHeight,
+            Color color, int circleRadius,
+            string text, int fontSize)
             : this()
         {
             Point1 = point1;
@@ -22,7 +24,8 @@ namespace ICFPC2015.Visualizer
             Point6 = point6;
             Color = color;
             CircleRadius = circleRadius;
-            Rectangle = new Rectangle(point6.X, point6.Y, point2.X - point6.X, point5.Y - point6.Y);
+            Text = text;
+            FontSize = fontSize;
             Circle = new Rectangle(circleStart.X, circleStart.Y, circleHeight, circleHeight);
         }
 
@@ -36,10 +39,12 @@ namespace ICFPC2015.Visualizer
 
         public Color Color { get; private set; }
         public bool HasColor { get { return Color != DefaultColor; } }
-        public Rectangle Rectangle { get; private set; }
 
         public int CircleRadius { get; private set; }
         public bool HasCircle { get { return CircleRadius > 0; } }
         public Rectangle Circle { get; private set; }
+
+        public string Text { get; set; }
+        public int FontSize { get; set; }
     }
 }
