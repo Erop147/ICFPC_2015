@@ -22,6 +22,8 @@ namespace ICFPC2015.Player.Players
                 .Position;
         }
 
+        public string Name { get { return "Paver"; } }
+
         private class Profit
         {
             public int BusyRows { get; set; }

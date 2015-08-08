@@ -22,7 +22,7 @@ namespace ICFPC2015.ConsoleRunner
         {
             players = new[]
             {
-//                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomLeftPositionFinder()),
+                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomLeftPositionFinder()),
                 new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new PaverPositionFinder()),
             };
 
@@ -35,7 +35,7 @@ namespace ICFPC2015.ConsoleRunner
                 }
                 else if (args[i] == "-t")
                 {
-                    timeLimit = new TimeSpan(0, 0, int.Parse(args[i + 1]));
+                    timeLimit = TimeSpan.FromSeconds(int.Parse(args[i + 1]));
                     i++;
                 }
                 else if (args[i] == "-m")
@@ -57,6 +57,7 @@ namespace ICFPC2015.ConsoleRunner
                 foreach (var game in games)
                 {
                     var best = -1;
+                    var playerName = string.Empty;
                     var commands = string.Empty;
 
                     var playGameTasks = players.Select(player => Play(game, player)).ToArray();
@@ -66,13 +67,14 @@ namespace ICFPC2015.ConsoleRunner
                         if (playResult.Score > best)
                         {
                             best = playResult.Score;
+                            playerName = playResult.PlayerName;
                             commands = playResult.Commands;
                         }
                     }
 
                     outputs.Add(new Output
                     {
-                        tag = "paver",
+                        tag = playerName,
                         seed = game.Seed,
                         problemId = game.ProblemId,
                         solution = commands

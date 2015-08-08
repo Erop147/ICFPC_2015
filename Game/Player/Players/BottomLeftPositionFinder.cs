@@ -13,5 +13,7 @@ namespace ICFPC2015.Player.Players
                             .First()
                             .Position;
         }
+
+        public string Name { get { return "BL"; } }
     }
 }
