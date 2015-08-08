@@ -13,6 +13,12 @@ namespace ICFPC2015.GameLogic.Logic
             };
         }
 
+        public Unit(Point[] points, Point pivotPoint) : this()
+        {
+            Points = points;
+            PivotPoint = pivotPoint;
+        }
+
         public Unit Clone()
         {
             return new Unit

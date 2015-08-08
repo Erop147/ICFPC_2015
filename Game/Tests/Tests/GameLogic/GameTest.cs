@@ -11,7 +11,7 @@ namespace ICFPC2015.Tests.Tests.GameLogic
         [Test]
         public void TestGetPivotLocation()
         {
-            var game = new Game(Board.CreateEmpty(7, 6), null, null, 0, 0, 0);
+            var game = new Game(Board.CreateEmpty(7, 6), null, null, 0, 0, 0, -1, -1, string.Empty, 0);
             var unit = Unit.Create(new Point(0, 0), new[]
             {
                 new Point(2, -2), new Point(-1, -1), new Point(0, -1),
@@ -31,7 +31,7 @@ namespace ICFPC2015.Tests.Tests.GameLogic
         [Test]
         public void TestGetPivotLocation2()
         {
-            var game = new Game(Board.CreateEmpty(6, 7), null, null, 0, 0, 0);
+            var game = new Game(Board.CreateEmpty(6, 7), null, null, 0, 0, 0, -1, -1, string.Empty, 0);
             var unit = Unit.Create(new Point(-1, -1), new[]
             {
                 new Point(2, 1), new Point(1, 2), new Point(1, 3), new Point(2, 3), new Point(2, 4), new Point(2, 5), 
@@ -49,7 +49,7 @@ namespace ICFPC2015.Tests.Tests.GameLogic
         [Test]
         public void TestGetPivotLocation3()
         {
-            var game = new Game(Board.CreateEmpty(5, 7), null, null, 0, 0, 0);
+            var game = new Game(Board.CreateEmpty(5, 7), null, null, 0, 0, 0, -1, -1, string.Empty, 0);
             var unit = Unit.Create(new Point(2, 4), new[]
             {
                 new Point(2, 1), new Point(5, 1), new Point(1, 2), new Point(3, 2), new Point(4, 2), new Point(6, 2), new Point(7, 2), new Point(4, 3), new Point(5, 3), 
@@ -75,7 +75,7 @@ namespace ICFPC2015.Tests.Tests.GameLogic
                 "....*....",
                 ".........",
                 ".........",
-            }), null, null, 0, 0, 0);
+            }), null, null, 0, 0, 0, -1, -1, string.Empty, 0);
 
             var actual = game.IsValid(new GameUnit(
                 Unit.Create(new Point(0, 0), new[] { new Point(3, 1), new Point(5, 1), new Point(4, 2), new Point(3, 3), new Point(5, 3) }),
@@ -100,7 +100,7 @@ namespace ICFPC2015.Tests.Tests.GameLogic
         {
             var board = Board.CreateEmpty(10, 5);
             var unit = Unit.Create(new Point(0, 0), new[] { new Point(-1, 0), new Point(0, 0), new Point(1, 0), new Point(0, 1), });
-            var game = new Game(board, null, new[] { unit }, 0, 0, 0);
+            var game = new Game(board, null, new[] { unit }, 0, 0, 0, -1, -1, string.Empty, 0);
 
             var actual = game.TrySpawnNew();
 
@@ -111,7 +111,7 @@ namespace ICFPC2015.Tests.Tests.GameLogic
         public void TestTrySpawnNew2()
         {
             var board = Board.CreateEmpty(10, 5);
-            var game = new Game(board, null, new Unit[0], 0, 0, 0);
+            var game = new Game(board, null, new Unit[0], 0, 0, 0, -1, -1, string.Empty, 0);
 
             var actual = game.TrySpawnNew();
 
@@ -128,7 +128,7 @@ namespace ICFPC2015.Tests.Tests.GameLogic
                 "......"
             });
             var unit = Unit.Create(new Point(0, 0), new[] { new Point(-1, 0), new Point(0, 0), new Point(1, 0), new Point(0, 1), });
-            var game = new Game(board, null, new[] { unit }, 0, 0, 0);
+            var game = new Game(board, null, new[] { unit }, 0, 0, 0, -1, -1, string.Empty, 0);
 
             var actual = game.TrySpawnNew();
 
@@ -146,15 +146,15 @@ namespace ICFPC2015.Tests.Tests.GameLogic
             });
             var unit = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
             var unit2 = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
-            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0);
+            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0, -1, -1, string.Empty, 0);
 
             var actual = game.TrySpawnNew();
             Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.TryMakeStep(Command.MoveWest);
+            actual = actual.TryMakeStep('p');
             Assert.AreEqual(GameState.Ok, actual.State);
 
-            actual = actual.TryMakeStep(Command.MoveWest);
+            actual = actual.TryMakeStep('p');
             Assert.AreEqual(GameState.NewIsSpawned, actual.State);
             Assert.AreEqual(string.Join(Environment.NewLine, new[]
             {
@@ -175,15 +175,15 @@ namespace ICFPC2015.Tests.Tests.GameLogic
             });
             var unit = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
             var unit2 = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
-            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0);
+            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0, -1, -1, string.Empty, 0);
 
             var actual = game.TrySpawnNew();
             Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.TryMakeStep(Command.MoveEast);
+            actual = actual.TryMakeStep('b');
             Assert.AreEqual(GameState.Ok, actual.State);
 
-            actual = actual.TryMakeStep(Command.MoveEast);
+            actual = actual.TryMakeStep('b');
             Assert.AreEqual(GameState.NewIsSpawned, actual.State);
             Assert.AreEqual(string.Join(Environment.NewLine, new[]
             {
@@ -204,22 +204,22 @@ namespace ICFPC2015.Tests.Tests.GameLogic
             });
             var unit = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
             var unit2 = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
-            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0);
+            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0, -1, -1, string.Empty, 0);
 
             var actual = game.TrySpawnNew();
             Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.TryMakeStep(Command.MoveSouthWest);
+            actual = actual.TryMakeStep('a');
             Assert.AreEqual(GameState.Ok, actual.State);
             Assert.AreEqual(0, actual.Current.UnitPosition.PivotLocation.Col);
             Assert.AreEqual(1, actual.Current.UnitPosition.PivotLocation.Row);
 
-            actual = actual.TryMakeStep(Command.MoveSouthWest);
+            actual = actual.TryMakeStep('a');
             Assert.AreEqual(GameState.Ok, actual.State);
             Assert.AreEqual(0, actual.Current.UnitPosition.PivotLocation.Col);
             Assert.AreEqual(2, actual.Current.UnitPosition.PivotLocation.Row);
 
-            actual = actual.TryMakeStep(Command.MoveSouthWest);
+            actual = actual.TryMakeStep('a');
             Assert.AreEqual(GameState.NewIsSpawned, actual.State);
             Assert.AreEqual(string.Join(Environment.NewLine, new[]
             {
@@ -240,22 +240,22 @@ namespace ICFPC2015.Tests.Tests.GameLogic
             });
             var unit = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
             var unit2 = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
-            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0);
+            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0, -1, -1, string.Empty, 0);
 
             var actual = game.TrySpawnNew();
             Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.TryMakeStep(Command.MoveSouthEast);
+            actual = actual.TryMakeStep('l');
             Assert.AreEqual(GameState.Ok, actual.State);
             Assert.AreEqual(1, actual.Current.UnitPosition.PivotLocation.Col);
             Assert.AreEqual(1, actual.Current.UnitPosition.PivotLocation.Row);
 
-            actual = actual.TryMakeStep(Command.MoveSouthEast);
+            actual = actual.TryMakeStep('l');
             Assert.AreEqual(GameState.Ok, actual.State);
             Assert.AreEqual(2, actual.Current.UnitPosition.PivotLocation.Col);
             Assert.AreEqual(2, actual.Current.UnitPosition.PivotLocation.Row);
 
-            actual = actual.TryMakeStep(Command.MoveSouthEast);
+            actual = actual.TryMakeStep('l');
             Assert.AreEqual(GameState.NewIsSpawned, actual.State);
             Assert.AreEqual(string.Join(Environment.NewLine, new[]
             {
@@ -276,17 +276,17 @@ namespace ICFPC2015.Tests.Tests.GameLogic
             });
             var unit = Unit.Create(new Point(0, 1), new[] { new Point(0, 0), });
             var unit2 = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
-            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0);
+            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0, -1, -1, string.Empty, 0);
 
             var actual = game.TrySpawnNew();
             Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.TryMakeStep(Command.TurnClockWise);
+            actual = actual.TryMakeStep('d');
             Assert.AreEqual(GameState.Ok, actual.State);
             Assert.AreEqual(2, actual.Current.GetAbsolutePoints().First().Col);
             Assert.AreEqual(0, actual.Current.GetAbsolutePoints().First().Row);
 
-            actual = actual.TryMakeStep(Command.TurnClockWise);
+            actual = actual.TryMakeStep('d');
             Assert.AreEqual(GameState.Ok, actual.State);
             Assert.AreEqual(2, actual.Current.GetAbsolutePoints().First().Col);
             Assert.AreEqual(1, actual.Current.GetAbsolutePoints().First().Row);
@@ -303,17 +303,17 @@ namespace ICFPC2015.Tests.Tests.GameLogic
             });
             var unit = Unit.Create(new Point(0, 1), new[] { new Point(0, 0), });
             var unit2 = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
-            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0);
+            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0, -1, -1, string.Empty, 0);
 
             var actual = game.TrySpawnNew();
             Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.TryMakeStep(Command.TurnCounterClockWise);
+            actual = actual.TryMakeStep('k');
             Assert.AreEqual(GameState.Ok, actual.State);
             Assert.AreEqual(0, actual.Current.GetAbsolutePoints().First().Col);
             Assert.AreEqual(1, actual.Current.GetAbsolutePoints().First().Row);
 
-            actual = actual.TryMakeStep(Command.TurnCounterClockWise);
+            actual = actual.TryMakeStep('k');
             Assert.AreEqual(GameState.Ok, actual.State);
             Assert.AreEqual(1, actual.Current.GetAbsolutePoints().First().Col);
             Assert.AreEqual(2, actual.Current.GetAbsolutePoints().First().Row);
@@ -330,20 +330,79 @@ namespace ICFPC2015.Tests.Tests.GameLogic
             });
             var unit = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
             var unit2 = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
-            var game = new Game(board, null, new[] { unit, unit2 }, 0, 12, 200);
+            var game = new Game(board, null, new[] { unit, unit2 }, 0, 12, 200, -1, -1, string.Empty, 0);
 
             var actual = game.TrySpawnNew();
             Assert.AreEqual(GameState.NewIsSpawned, actual.State);
 
-            actual = actual.TryMakeStep(Command.MoveSouthEast);
+            actual = actual.TryMakeStep('l');
             Assert.AreEqual(GameState.Ok, actual.State);
             Assert.AreEqual(1, actual.Current.GetAbsolutePoints().First().Col);
             Assert.AreEqual(1, actual.Current.GetAbsolutePoints().First().Row);
 
-            actual = actual.TryMakeStep(Command.MoveSouthEast);
+            actual = actual.TryMakeStep('l');
             Assert.AreEqual(GameState.NewIsSpawned, actual.State);
             Assert.AreEqual(2, actual.LastUnitLinesCleared);
             Assert.AreEqual(832, actual.Score);
+        }
+
+        [Test]
+        public void TestMakeCommandWithUpdatedScore2()
+        {
+            var board = Board.Create(new[]
+            {
+                ".....",
+                ".....",
+                ".....",
+                ".....",
+                ".....",
+            });
+            var unit = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
+            var unit2 = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
+            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 200, -1, -1, "e", 0);
+
+            var actual = game.TrySpawnNew();
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
+
+            actual = actual.TryMakeStep('i');
+            Assert.AreEqual(GameState.Ok, actual.State);
+
+            actual = actual.TryMakeStep('!');
+            Assert.AreEqual(GameState.Ok, actual.State);
+
+            Assert.AreEqual(506, actual.Score);
+        }
+
+        [Test]
+        public void TestMakeCommandWithUpdatedScore3()
+        {
+            MagicWordsStore.AddWords(new [] { "aba" });
+
+            var board = Board.Create(new[]
+            {
+                ".....",
+                ".....",
+                ".....",
+                ".....",
+                ".....",
+            });
+            var unit = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
+            var unit2 = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
+            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 200, -1, -1, "ababababababababababababababababababababababababab", 0);
+
+            var actual = game.TrySpawnNew();
+            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
+
+            actual = actual.TryMakeStep('a');
+            Assert.AreEqual(GameState.Ok, actual.State);
+
+            actual = actual.TryMakeStep('b');
+            Assert.AreEqual(GameState.Ok, actual.State);
+
+            actual = actual.TryMakeStep('a');
+            Assert.AreEqual(GameState.Ok, actual.State);
+
+            Assert.AreEqual(512, actual.Score);
         }
     }
 }

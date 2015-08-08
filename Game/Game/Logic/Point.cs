@@ -46,6 +46,11 @@ namespace ICFPC2015.GameLogic.Logic
             return new Point(newCol, newRow);
         }
 
+        public bool Equals(int row, int col)
+        {
+            return Row == row && Col == col;
+        }
+
         private static int Mod2(int x)
         {
             return Math.Abs(x) % 2;
