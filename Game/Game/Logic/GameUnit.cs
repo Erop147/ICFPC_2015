@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Game.Logic
 {
@@ -22,7 +23,7 @@ namespace Game.Logic
 
         public GameUnit Clone()
         {
-            return new GameUnit(Unit.Clone(), PivotLocation.Clone(), RotationCount);
+            return new GameUnit(Unit.Clone(), PivotLocation, RotationCount);
         }
 
         public GameUnit MakeStep(Command command)
@@ -42,12 +43,18 @@ namespace Game.Logic
                 }
                 case Command.MoveSouthEast:
                 {
-                    result.PivotLocation += new Point(1, 1);
+                    if (result.PivotLocation.Row % 2 == 0)
+                        result.PivotLocation += new Point(0, 1);
+                    else
+                        result.PivotLocation += new Point(1, 1);
                     return result;
                 }
                 case Command.MoveSouthWest:
                 {
-                    result.PivotLocation += new Point(-1, 1);
+                    if (result.PivotLocation.Row % 2 == 0)
+                        result.PivotLocation += new Point(-1, 1);
+                    else
+                        result.PivotLocation += new Point(0, 1);
                     return result;
                 }
                 case Command.TurnClockWise:
@@ -61,6 +68,7 @@ namespace Game.Logic
                     return result;
                 }
             }
+            throw new NotImplementedException(string.Format("Command {0} is not implemented", command));
         }
     }
 }

@@ -2,22 +2,12 @@
 
 namespace Game.Logic
 {
-    public class Point
+    public struct Point
     {
-        private Point()
-        {
-            
-        }
-
-        public Point(int col, int row)
+        public Point(int col, int row) : this()
         {
             Row = row;
             Col = col;
-        }
-
-        public Point Clone()
-        {
-            return new Point(Col, Row);
         }
 
         public int Row { get; private set; }

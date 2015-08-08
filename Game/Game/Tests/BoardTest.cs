@@ -23,9 +23,9 @@ namespace Game.Tests
             });
 
             var actual = board.Update();
-            Assert.AreEqual(4, actual);
+            Assert.AreEqual(4, actual.RowsCleaned);
 
-            var field = board.ToString();
+            var field = actual.NewBoard.ToString();
             Assert.AreEqual(string.Join(Environment.NewLine, new[]
             {
                 ".......",
@@ -37,6 +37,20 @@ namespace Game.Tests
                 "..*....",
                 "..*...."
             }), field);
+        }
+
+        [Test]
+        public void TestClone()
+        {
+            var board = Board.Create(new []
+            {
+                "..",
+                ".*"
+            });
+
+            var board2 = board.Clone();
+            board2.Field[0][0] = CellState.Busy;
+            Assert.AreEqual(CellState.Free, board.Field[0][0]);
         }
     }
 }

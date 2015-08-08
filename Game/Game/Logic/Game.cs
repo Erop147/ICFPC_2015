@@ -3,33 +3,42 @@ using System.Linq;
 
 namespace Game.Logic
 {
-    public class Game
+    public struct Game
     {
+        public readonly Unit[] UnitsSequence;
+        public int CurrentUnitNumber { get; set; }
         public Board Board { get; private set; }
         public GameUnit Current { get; private set; }
 
-        public Game(Board board, GameUnit gameUnit)
+        public Game(Board board, GameUnit current, Unit[] unitsSequence, int currentUnitNumber) 
+            : this()
         {
             Board = board;
-            Current = gameUnit;
+            Current = current;
+            UnitsSequence = unitsSequence;
+            CurrentUnitNumber = currentUnitNumber;
         }
 
-        public GameStepResult TrySpawn(Unit unit)
+        public GameStepResult TrySpawnNew()
         {
             if (Current != null)
             {
                 throw new Exception("Current unit is not null");
             }
-
+            if (CurrentUnitNumber == UnitsSequence.Length)
+            {
+                return GameOver();
+            }
+            var unit = UnitsSequence[CurrentUnitNumber];
             var pivot = GetPivotLocation(unit);
             var gameUnit = new GameUnit(unit, pivot, 0);
 
             if (!IsValid(gameUnit))
             {
-                return Result(null, StepResult.GameOver);
+                return GameOver();
             }
 
-            return Result(gameUnit, StepResult.Ok);
+            return MoveCurrent(gameUnit);
         }
 
         public Point GetPivotLocation(Unit unit)
@@ -59,20 +68,6 @@ namespace Game.Logic
             return true;
         }
 
-        public bool TryPlaceCurrent()
-        {
-            if (!IsValid(Current))
-            {
-                return false;
-            }
-            foreach (var point in Current.GetAbsolutePoints())
-            {
-                Board.Field[point.Row][point.Col] = CellState.Busy;
-            }
-            Current = null;
-            return true;
-        }
-
         public GameStepResult TryMakeStep(Command command)
         {
             if (Current == null)
@@ -87,14 +82,24 @@ namespace Game.Logic
             var newGameUnit = Current.MakeStep(command);
             if (!IsValid(newGameUnit))
             {
-                return Result(Current, StepResult.Lock);
+                var lockedCells = Current.GetAbsolutePoints();
+                var newBoard = Board.Place(lockedCells).Update();
+                var gameWithNewUnit = new Game(newBoard.NewBoard, null, UnitsSequence, CurrentUnitNumber + 1);
+                return gameWithNewUnit.TrySpawnNew();
             }
+            return MoveCurrent(newGameUnit);
         }
 
-        private GameStepResult Result(GameUnit gameUnit, StepResult result)
+        private GameStepResult MoveCurrent(GameUnit gameUnit)
         {
-            var game = new Game(Board.Clone(), gameUnit);
-            return new GameStepResult(game, result);
+            var game = this;
+            game.Current = gameUnit;
+            return new GameStepResult(game, StepResult.Ok);
+        }
+
+        private GameStepResult GameOver()
+        {
+            return new GameStepResult(this, StepResult.GameOver);
         }
     }
 }

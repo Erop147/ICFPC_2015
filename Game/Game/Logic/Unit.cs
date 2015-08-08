@@ -2,12 +2,8 @@
 
 namespace Game.Logic
 {
-    public class Unit
+    public struct Unit
     {
-        private Unit()
-        {
-        }
-
         public static Unit Create(Point pivotPoint, Point[] points)
         {
             return new Unit
@@ -21,12 +17,12 @@ namespace Game.Logic
         {
             return new Unit
             {
-                Points = Points.Select(x => x.Clone()).ToArray(),
-                PivotPoint = PivotPoint.Clone()
+                Points = Points.Select(x => x).ToArray(),
+                PivotPoint = PivotPoint
             };
         }
 
-        public Point[] Points { get; protected set; }
-        public Point PivotPoint { get; protected set; }
+        public Point[] Points { get; private set; }
+        public Point PivotPoint { get; private set; }
     }
 }

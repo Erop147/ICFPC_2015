@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Game.Logic
 {
-    public class Board
+    public struct Board
     {
         public int Height { get; private set; }
         public int Width { get; private set; }
@@ -15,9 +15,9 @@ namespace Game.Logic
             for (var i = 0; i < Height; i++)
             {
                 cells[i] = new CellState[Width];
-                for (int j = 0; j < Width; j++)
+                for (var j = 0; j < Width; j++)
                 {
-                    cells[i][j] = CellState.Free;
+                    cells[i][j] = Field[i][j];
                 }
             }
 
@@ -29,19 +29,13 @@ namespace Game.Logic
             };
         }
 
-        public bool InField(Point point)
-        {
-            return 0 <= point.Row && point.Row < Height &&
-                   0 <= point.Col && point.Col < Width;
-        }
-
         public static Board CreateEmpty(int height, int width)
         {
             var cells = new CellState[height][];
             for (var i = 0; i < height; i++)
             {
                 cells[i] = new CellState[width];
-                for (int j = 0; j < width; j++)
+                for (var j = 0; j < width; j++)
                 {
                     cells[i][j] = CellState.Free;
                 }
@@ -83,27 +77,42 @@ namespace Game.Logic
             return string.Join(Environment.NewLine, Field.Select(x => string.Join("", x.Select(y => y == CellState.Busy ? "*" : "."))));
         }
 
-        public int Update()
+        public Board Place(Point[] points)
         {
+            var newBoard = Clone();
+            foreach (var point in points)
+            {
+                newBoard.Field[point.Row][point.Col] = CellState.Busy;
+            }
+            return newBoard;
+        }
+
+        public BoardUpdateResult Update()
+        {
+            var newBoard = Clone();
             var busyRowCount = 0;
             for (var row = Height - 1; row >= 0; row --)
             {
-                if (RowIsBusy(row))
+                if (newBoard.RowIsBusy(row))
                 {
                     busyRowCount++;
                 }
                 else
-                {
-                    ShiftRowDown(row, busyRowCount);
+                { 
+                    newBoard.ShiftRowDown(row, busyRowCount);
                 }
             }
 
             for (var row = 0; row < busyRowCount; row ++)
             {
-                ClearRow(row);
+                newBoard.ClearRow(row);
             }
 
-            return busyRowCount;
+            return new BoardUpdateResult
+            {
+                NewBoard = newBoard,
+                RowsCleaned = busyRowCount
+            };
         }
 
         private bool RowIsBusy(int row)
@@ -113,7 +122,7 @@ namespace Game.Logic
 
         private void ClearRow(int row)
         {
-            for (int col = 0; col < Width; col ++)
+            for (int col = 0; col < Width; col++)
             {
                 Field[row][col] = CellState.Free;
             }
@@ -128,6 +137,12 @@ namespace Game.Logic
             {
                 Field[row + delta][col] = Field[row][col];
             }
+        }
+
+        public bool InField(Point point)
+        {
+            return 0 <= point.Row && point.Row < Height &&
+                   0 <= point.Col && point.Col < Width;
         }
     }
 }
