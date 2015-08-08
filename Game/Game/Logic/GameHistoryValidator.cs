@@ -75,8 +75,7 @@ namespace ICFPC2015.GameLogic.Logic
 
         private static string GetPositionString(Game game)
         {
-            var points = game.Current.GetAbsolutePoints();
-            return string.Join(";", points.OrderBy(x => x.Col).ThenBy(x => x.Row).Concat(new [] { game.Current.UnitPosition.PivotLocation }).Select(x => x.ToString()));
+            return game.Current.ToCoordinatesString();
         }
     }
 }

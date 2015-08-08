@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using ICFPC2015.GameLogic.Logic;
 using ICFPC2015.Player.Implementation;
 
@@ -23,9 +24,9 @@ namespace ICFPC2015.Player.Players
             {
                 var unitPositions = ReachableStatesGetter.Get(game.Board, game.Current, true);
 
-                var finishPosition = bestPositionFinder.FindBest(unitPositions, game);
+                var finishPosition = bestPositionFinder.FindBest(unitPositions.Select(x => x.UnitPosition).ToArray(), game);
 
-                var commandString = commandStringGenerator.Generate(game.Board, game.Current, finishPosition);
+                var commandString = commandStringGenerator.Generate(game.Board, game.Current, new GameUnit(game.Current.Unit, finishPosition));
                 stringBuilder.Append(commandString);
 
                 foreach (var command in commandString)

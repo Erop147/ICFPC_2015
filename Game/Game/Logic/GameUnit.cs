@@ -76,5 +76,24 @@ namespace ICFPC2015.GameLogic.Logic
         {
             return GetAbsolutePoints().OrderByDescending(x => x.Row).ThenBy(x => x.Col).First();
         }
+
+        public override int GetHashCode()
+        {
+            return ToCoordinatesString().GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as GameUnit;
+            if (other == null)
+                return false;
+            return ToCoordinatesString() == other.ToCoordinatesString();
+        }
+
+        public string ToCoordinatesString()
+        {
+            var points = GetAbsolutePoints();
+            return string.Join(";", points.OrderBy(x => x.Col).ThenBy(x => x.Row).Concat(new[] { UnitPosition.PivotLocation }).Select(x => x.ToString()));
+        }
     }
 }
