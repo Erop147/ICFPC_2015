@@ -21,7 +21,7 @@ namespace ICFPC2015.Player.Players
 
             while (game.State != GameState.GameOver && game.State != GameState.Error)
             {
-                var unitPositions = ReachableStatesGetter.Get(game.Board, game.Current);
+                var unitPositions = ReachableStatesGetter.Get(game.Board, game.Current, true);
 
                 var finishPosition = bestPositionFinder.FindBest(unitPositions, game);
 
