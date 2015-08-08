@@ -53,7 +53,10 @@ namespace ICFPC2015.Visualizer
             graphics.DrawLine(borderPen, hexagon.Point5, hexagon.Point6);
             graphics.DrawLine(borderPen, hexagon.Point6, hexagon.Point1);
 
-            //graphics.DrawString(string.Format("{0};{1}", x, y), new Font(FontFamily.GenericSerif, 5), );
+            if (!string.IsNullOrEmpty(hexagon.Text))
+            {
+                graphics.DrawString(hexagon.Text, new Font(FontFamily.GenericMonospace, hexagon.FontSize), borderPen.Brush, hexagon.Point6.X, hexagon.Point6.Y);
+            }
 
             if (hexagon.HasCircle)
             {

@@ -16,6 +16,8 @@ namespace ICFPC2015.Visualizer
         private Game currentGame;
         private int commandIndex;
         private string command;
+        private bool needStopExecute;
+        private bool executing;
 
         public Form1()
         {
@@ -97,11 +99,16 @@ namespace ICFPC2015.Visualizer
             gameIndexCombobox.Enabled = false;
             multipierTextBox.Enabled = false;
             startGameButton.Enabled = false;
+            stopExecuteCommandButton.Enabled = true;
 
-            commandIndex = 0;
-            command = commandsTextBox.Text;
-            scoresLabel.Text = 0.ToString();
-            stateLabel.Text = string.Empty;
+            if (!executing)
+            {
+                executing = true;
+                commandIndex = 0;
+                command = commandsTextBox.Text;
+                scoresLabel.Text = 0.ToString();
+                stateLabel.Text = string.Empty;
+            }
 
             timer = new Timer {Interval = GetTimerValue()};
             timer.Tick += ExecuteGameStep;
@@ -118,7 +125,8 @@ namespace ICFPC2015.Visualizer
 
             DrawBoard();
 
-            if (commandIndex + 1 == command.Length || currentGame.State == GameState.Error || currentGame.State == GameState.GameOver)
+            if (needStopExecute || commandIndex + 1 == command.Length ||
+                currentGame.State == GameState.Error || currentGame.State == GameState.GameOver)
             {
                 timer.Stop();
                 executeComandButton.Enabled = true;
@@ -126,6 +134,9 @@ namespace ICFPC2015.Visualizer
                 gameIndexCombobox.Enabled = true;
                 multipierTextBox.Enabled = true;
                 startGameButton.Enabled = true;
+                stopExecuteCommandButton.Enabled = false;
+                needStopExecute = false;
+                executing = false;
                 return;
             }
 
@@ -139,7 +150,13 @@ namespace ICFPC2015.Visualizer
             scoresLabel.Text = 0.ToString();
             stateLabel.Text = string.Empty;
             currentGame = games[GetGameIndexValue()];
+            executing = false;
             DrawBoard();
+        }
+
+        private void stopExecuteCommandButton_Click(object sender, EventArgs e)
+        {
+            needStopExecute = true;
         }
     }
 }
