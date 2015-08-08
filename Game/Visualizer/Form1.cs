@@ -9,29 +9,31 @@ namespace ICFPC2015.Visualizer
     {
         public Form1()
         {
-            InitializeBoard();
             InitializeComponent();
+            InitializeBoard();
         }
 
         private void InitializeBoard()
         {
-            var board = Board.CreateEmpty(10, 5);
-            var unit = new Unit(new[] {new Point(-1, 0), new Point(1, 0)}, new Point(0, 0));
-            var game = new Game(board, null, new[] {unit}, 0);
-
+            var games = new GameBuilder().Build(@"..\..\..\..\Problems\problem_1.json");
+            var game = games[0];
             DrowBoard(game);
         }
 
         private void DrowBoard(Game game)
         {
-            Image board = new Bitmap(500, 1000);
+            const int multiplier = 10;
+            var imageWidth = (4*game.Board.Width + 2)*multiplier;
+            var imageHeight = (3*game.Board.Height + 1)*multiplier;
+
+            Image board = new Bitmap(imageWidth, imageHeight);
             using (var graphics = Graphics.FromImage(board))
             using (Brush borderBrush = new SolidBrush(Color.Black))
             using (var borderPen = new Pen(borderBrush, 2))
             using (var unitBrush = new SolidBrush(Hexagon.UnitColor))
             using (var lockedBrush = new SolidBrush(Hexagon.LockedColor))
             {
-                var hexagonFactory = new HexagonFactory(10);
+                var hexagonFactory = new HexagonFactory(multiplier);
                 for (var y = 0; y < game.Board.Field.Length; y++)
                 {
                     for (int x = 0; x < game.Board.Field[y].Length; x++)
@@ -39,25 +41,34 @@ namespace ICFPC2015.Visualizer
                         var cell = game.Board.Field[y][x];
                         var isLocked = cell == CellState.Busy;
 
-                        var isCurrentUnitPoint = IsCurrentUnitPoint(game.Current.Unit.Points, x, y);
-                        var isCurrentUnitPivot = game.Current.Unit.PivotPoint.Equals(y, x);
+                        var isCurrentUnitPoint = IsCurrentUnitPoint(game.Current.GetAbsolutePoints(), x, y);
+                        var isCurrentUnitPivot = game.Current.UnitPosition.PivotLocation.Equals(y, x);
 
                         var hexagon = hexagonFactory.Create(x, y, isLocked, isCurrentUnitPoint, isCurrentUnitPivot);
                         DrawHexagon(hexagon, graphics, borderPen, unitBrush, lockedBrush);
                     }
                 }
+
+                boardBox.Image = board;
+                boardBox.Size = new Size(imageWidth, imageHeight);
             }
         }
 
         private void DrawHexagon(Hexagon hexagon, Graphics graphics, Pen borderPen, Brush unitBrush, Brush lockedBrush)
         {
-            graphics.DrawLines(borderPen, new[] {hexagon.Point1, hexagon.Point2, hexagon.Point3, hexagon.Point4, hexagon.Point5, hexagon.Point6});
-
             if (hexagon.HasColor)
             {
                 var brush = hexagon.Color == Hexagon.UnitColor ? unitBrush : lockedBrush;
-                graphics.FillRectangle(brush, hexagon.Rectangle);
+                graphics.FillClosedCurve(brush, new[] {hexagon.Point1, hexagon.Point2, hexagon.Point3, hexagon.Point4, hexagon.Point5, hexagon.Point6});
             }
+
+            graphics.DrawLine(borderPen, hexagon.Point1, hexagon.Point2);
+            graphics.DrawLine(borderPen, hexagon.Point2, hexagon.Point3);
+            graphics.DrawLine(borderPen, hexagon.Point3, hexagon.Point4);
+            graphics.DrawLine(borderPen, hexagon.Point4, hexagon.Point5);
+            graphics.DrawLine(borderPen, hexagon.Point5, hexagon.Point6);
+            graphics.DrawLine(borderPen, hexagon.Point6, hexagon.Point1);
+
 
             if (hexagon.HasCircle)
             {

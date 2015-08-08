@@ -35,7 +35,7 @@ namespace ICFPC2015.Visualizer
         public Point Center { get; private set; }
 
         public Color Color { get; private set; }
-        public bool HasColor { get { return Color == DefaultColor; } }
+        public bool HasColor { get { return Color != DefaultColor; } }
         public Rectangle Rectangle { get; private set; }
 
         public int CircleRadius { get; private set; }

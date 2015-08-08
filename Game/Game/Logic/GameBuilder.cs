@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using ICFPC2015.GameLogic.Logic.Input;
