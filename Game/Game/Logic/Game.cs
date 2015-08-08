@@ -10,13 +10,18 @@ namespace ICFPC2015.GameLogic.Logic
         public Board Board { get; private set; }
         public GameUnit Current { get; private set; }
 
-        public Game(Board board, GameUnit current, Unit[] unitsSequence, int currentUnitNumber) 
+        public int LastUnitLinesCleared { get; private set; }
+        public int Score { get; private set; }
+
+        public Game(Board board, GameUnit current, Unit[] unitsSequence, int currentUnitNumber, int lastUnitLinesCleared, int score) 
             : this()
         {
             Board = board;
             Current = current;
             UnitsSequence = unitsSequence;
             CurrentUnitNumber = currentUnitNumber;
+            LastUnitLinesCleared = lastUnitLinesCleared;
+            Score = score;
         }
 
         public GameStepResult TrySpawnNew()
@@ -84,11 +89,19 @@ namespace ICFPC2015.GameLogic.Logic
             if (!IsValid(newGameUnit))
             {
                 var lockedCells = Current.GetAbsolutePoints();
-                var newBoard = Board.Place(lockedCells).Update();
-                var gameWithNewUnit = new Game(newBoard.NewBoard, null, UnitsSequence, CurrentUnitNumber + 1);
+                var updateResult = Board.Place(lockedCells).Update();
+                var additionalScore = CalculateScore(LastUnitLinesCleared, updateResult.RowsCleaned, Current.Unit.Points.Length);
+                var gameWithNewUnit = new Game(updateResult.NewBoard, null, UnitsSequence, CurrentUnitNumber + 1, updateResult.RowsCleaned, Score + additionalScore);
                 return gameWithNewUnit.TrySpawnNew();
             }
             return MoveCurrent(newGameUnit);
+        }
+
+        private static int CalculateScore(int lastUnitRowsCleaned, int rowsCleaned, int size)
+        {
+            var points = size + 100 * (1 + rowsCleaned) * rowsCleaned / 2;
+            var lineBonus = lastUnitRowsCleaned > 1 ? (lastUnitRowsCleaned - 1) * points / 10 : 0;
+            return points + lineBonus;
         }
 
         private GameStepResult SpawnedNew(GameUnit gameUnit)

@@ -24,7 +24,7 @@ namespace ICFPC2015.GameLogic.Logic
                 var generator = new RandomGenerator(seed);
                 var unitSequence = generator.Generate().Select(x => units[x % units.Length]).Take(input.sourceLength).ToArray();
 
-                games.Add(new Game(board, null, unitSequence, 0));
+                games.Add(new Game(board, null, unitSequence, 0, 0, 0));
             }
 
             return games.ToArray();
