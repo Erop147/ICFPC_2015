@@ -55,10 +55,10 @@ namespace ICFPC2015.GameLogic.Logic
             var m = field[0].Length;
 
             var cells = new CellState[n][];
-            for (var i = 0; i < n; i ++)
+            for (var i = 0; i < n; i++)
             {
                 cells[i] = new CellState[m];
-                for (int j = 0; j < m; j ++)
+                for (int j = 0; j < m; j++)
                 {
                     cells[i][j] = field[i][j] == '.' ? CellState.Free : CellState.Busy;
                 }
@@ -96,19 +96,19 @@ namespace ICFPC2015.GameLogic.Logic
         {
             var newBoard = Clone();
             var busyRowCount = 0;
-            for (var row = Height - 1; row >= 0; row --)
+            for (var row = Height - 1; row >= 0; row--)
             {
                 if (newBoard.RowIsBusy(row))
                 {
                     busyRowCount++;
                 }
                 else
-                { 
+                {
                     newBoard.ShiftRowDown(row, busyRowCount);
                 }
             }
 
-            for (var row = 0; row < busyRowCount; row ++)
+            for (var row = 0; row < busyRowCount; row++)
             {
                 newBoard.ClearRow(row);
             }
@@ -138,7 +138,7 @@ namespace ICFPC2015.GameLogic.Logic
             if (delta == 0)
                 return;
 
-            for (var col = 0; col < Width; col ++)
+            for (var col = 0; col < Width; col++)
             {
                 Field[row + delta][col] = Field[row][col];
             }
@@ -148,6 +148,22 @@ namespace ICFPC2015.GameLogic.Logic
         {
             return 0 <= point.Row && point.Row < Height &&
                    0 <= point.Col && point.Col < Width;
+        }
+
+        public bool IsValid(GameUnit gameUnit)
+        {
+            foreach (var point in gameUnit.GetAbsolutePoints())
+            {
+                if (!InField(point))
+                {
+                    return false;
+                }
+                if (Field[point.Row][point.Col] == CellState.Busy)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

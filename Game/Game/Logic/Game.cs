@@ -59,18 +59,7 @@ namespace ICFPC2015.GameLogic.Logic
 
         public bool IsValid(GameUnit gameUnit)
         {
-            foreach (var point in gameUnit.GetAbsolutePoints())
-            {
-                if (!Board.InField(point))
-                {
-                    return false;
-                }
-                if (Board.Field[point.Row][point.Col] == CellState.Busy)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return Board.IsValid(gameUnit);
         }
 
         public GameStepResult TryMakeStep(Command command)
