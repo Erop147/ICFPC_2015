@@ -14,7 +14,7 @@ namespace ICFPC2015.Player.Players
             this.commandStringGenerator = commandStringGenerator;
         }
 
-        public string Play(Game game)
+        public PlayedGameInfo Play(Game game)
         {
             var stringBuilder = new StringBuilder();
 
@@ -28,7 +28,7 @@ namespace ICFPC2015.Player.Players
                                                   .First()
                                                   .Position;
 
-                var commandString = commandStringGenerator.Generate(game.Board, game.Current, finishPosition);
+                var commandString = commandStringGenerator.Generate(game, finishPosition);
                 stringBuilder.Append(commandString);
 
                 foreach (var command in commandString)
@@ -37,7 +37,7 @@ namespace ICFPC2015.Player.Players
                 }
             }
 
-            return stringBuilder.ToString();
+            return new PlayedGameInfo(stringBuilder.ToString(), game.Score);
         }
     }
 }

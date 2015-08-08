@@ -7,24 +7,26 @@ namespace ICFPC2015.Player.Implementation
 {
     public static class ReachableStatesGetter
     {
-        public static UnitPosition[] Get(Board board, GameUnit unit)
+        public static UnitPosition[] Get(Board board, GameUnit unit, HashSet<UnitPosition> usedPositions = null)
         {
-            var used = new HashSet<UnitPosition>();
-            Dfs(board, unit, used);
+            var newlyUsedPositions = new HashSet<UnitPosition>();
+            Dfs(board, unit, newlyUsedPositions, usedPositions ?? new HashSet<UnitPosition>());
 
-            return used.ToArray();
+            return newlyUsedPositions.ToArray();
         }
 
-        private static void Dfs(Board board, GameUnit unit, HashSet<UnitPosition> used)
+        private static void Dfs(Board board, GameUnit unit, HashSet<UnitPosition> newlyUsedPositions, HashSet<UnitPosition> previouslyUsedPositions)
         {
-            used.Add(unit.UnitPosition);
+            newlyUsedPositions.Add(unit.UnitPosition);
 
             foreach (var command in Enum.GetValues(typeof(Command)).Cast<Command>())
             {
                 var nextUnit = unit.MakeStep(command);
-                if (!used.Contains(nextUnit.UnitPosition) && board.IsValid(nextUnit))
+                if (!previouslyUsedPositions.Contains(nextUnit.UnitPosition) && 
+                    !newlyUsedPositions.Contains(nextUnit.UnitPosition) &&
+                    board.IsValid(nextUnit))
                 {
-                    Dfs(board, nextUnit, used);
+                    Dfs(board, nextUnit, newlyUsedPositions, previouslyUsedPositions);
                 }
             }
         }

@@ -4,6 +4,6 @@ namespace ICFPC2015.Player.Players
 {
     public interface IPlayer
     {
-        string Play(Game game);
+        PlayedGameInfo Play(Game game);
     }
 }
