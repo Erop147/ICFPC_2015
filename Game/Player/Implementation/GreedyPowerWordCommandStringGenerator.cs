@@ -54,7 +54,7 @@ namespace ICFPC2015.Player.Implementation
                     }
                 }
             }
-            foreach (var command in Enum.GetValues(typeof(Command)).Cast<Command>())
+            foreach (var command in Enum.GetValues(typeof(Command)).Cast<Command>().Except(new[] { Command.Empty }))
             {
                 if (!board.IsValid(unit.MakeStep(command)))
                 {

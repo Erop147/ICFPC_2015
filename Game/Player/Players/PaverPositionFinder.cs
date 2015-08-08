@@ -7,7 +7,7 @@ namespace ICFPC2015.Player.Players
     {
         public GameUnit FindBest(GameUnit[] positions, Game game)
         {
-            return positions
+            var orderedPositions = positions
                 .Select(x =>
                     new
                     {
@@ -15,7 +15,9 @@ namespace ICFPC2015.Player.Players
                         Profit = GetScore(x.UnitPosition, game)
                     })
                 .OrderByDescending(x => x.Profit.BusyRows)
-                .ThenByDescending(x => x.Profit.DiverScore + x.Profit.ReachableCount * game.Board.Height)
+                .ThenByDescending(x => x.Profit.DiverScore + x.Profit.ReachableCount * game.Board.Height);
+
+            return orderedPositions
                 .First()
                 .GameUnit;
         }
@@ -29,9 +31,14 @@ namespace ICFPC2015.Player.Players
 
         private Profit GetScore(UnitPosition position, Game game)
         {
+            if (position.PivotLocation.Col == 0 && position.PivotLocation.Row == 2)
+            {
+                int xx = -1;
+            }
+
             var unit = game.Current.Unit;
             var points = new GameUnit(unit, position).GetAbsolutePoints();
-            var board = game.Board;
+            var board = game.Board.Clone();
 
             foreach (var point in points)
             {

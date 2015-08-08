@@ -7,6 +7,7 @@
         MoveSouthEast,
         MoveSouthWest,
         TurnClockWise,
-        TurnCounterClockWise
+        TurnCounterClockWise,
+        Empty
     }
 }
