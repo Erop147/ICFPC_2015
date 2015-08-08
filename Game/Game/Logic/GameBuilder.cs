@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ICFPC2015.GameLogic.Logic.Input;
@@ -24,7 +25,15 @@ namespace ICFPC2015.GameLogic.Logic
                 var generator = new RandomGenerator(seed);
                 var unitSequence = generator.Generate().Select(x => units[x % units.Length]).Take(input.sourceLength).ToArray();
 
-                games.Add(new Game(board, null, unitSequence, 0, 0, 0));
+                var game = new Game(board, null, unitSequence, 0, 0, 0);
+                var spawnResult = game.TrySpawnNew();
+                if (spawnResult.Result != StepResult.NewIsSpawned)
+                {
+                    throw new Exception("Can't spawn first unit");
+                }
+                game = spawnResult.Game;
+
+                games.Add(game);
             }
 
             return games.ToArray();
