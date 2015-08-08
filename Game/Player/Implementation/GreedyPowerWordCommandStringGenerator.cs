@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ICFPC2015.GameLogic.Logic;
 
@@ -9,23 +11,43 @@ namespace ICFPC2015.Player.Implementation
         public string Generate(Board board, GameUnit unit, UnitPosition finishPosition)
         {
             var stringBuilder = new StringBuilder();
-            var powerWords = MagicWordsStore.Words;
+            var words =
+                MagicWordsStore.Words.Concat(
+                    Enum.GetValues(typeof (Command))
+                        .Cast<Command>()
+                        .Select(x => CommandConverter.CovertToAnyChar(x).ToString()))
+                        .ToArray();
+            var usedPositions = new HashSet<UnitPosition>();
             while (!unit.UnitPosition.Equals(finishPosition))
             {
-                foreach (var powerWord in powerWords.OrderByDescending(x => x.Length))
+                foreach (var powerWord in words.OrderByDescending(x => x.Length))
                 {
+                    var newlyUsedPositions = new HashSet<UnitPosition>();
                     var currentUnit = unit;
-                    foreach (var command in powerWord)
+                    var fail = false;
+                    for (var i = 0; i < powerWord.Length; ++i)
                     {
-                        currentUnit = currentUnit.MakeStep(CommandConverter.Convert(command));
-                        if (!board.IsValid(currentUnit))
+                        var command = powerWord[i];
+                        newlyUsedPositions.Add(currentUnit.UnitPosition);
+                        var nextUnit = currentUnit.MakeStep(CommandConverter.Convert(command));
+                        var locked = !board.IsValid(nextUnit);
+                        if (newlyUsedPositions.Contains(nextUnit.UnitPosition) ||
+                            usedPositions.Contains(nextUnit.UnitPosition) ||
+                            (locked && i < powerWord.Length - 1))
                         {
+                            fail = true;
                             break;
                         }
+                        if (!locked)
+                        {
+                            currentUnit = nextUnit;
+                        }
                     }
-                    if (board.IsValid(currentUnit) && ReachableStatesGetter.Get(board, currentUnit).Contains(finishPosition))
+                    var allUsedPositions = new HashSet<UnitPosition>(usedPositions.Union(newlyUsedPositions));
+                    if (!fail && ReachableStatesGetter.Get(board, currentUnit, false, allUsedPositions).Contains(finishPosition))
                     {
                         unit = currentUnit;
+                        usedPositions = allUsedPositions;
                         stringBuilder.Append(powerWord);
                         break;
                     }

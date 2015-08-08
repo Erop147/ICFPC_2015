@@ -54,7 +54,9 @@
     <Compile Include="Logic\CommandConverter.cs" />
     <Compile Include="Logic\Game.cs" />
     <Compile Include="Logic\GameBuilder.cs" />
+    <Compile Include="Logic\GameHistoryValidator.cs" />
     <Compile Include="Logic\GameUnit.cs" />
+    <Compile Include="Logic\HistoryValidateResult.cs" />
     <Compile Include="Logic\Input\Input.cs" />
     <Compile Include="Logic\Input\InputCell.cs" />
     <Compile Include="Logic\Input\InputReader.cs" />
