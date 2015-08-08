@@ -124,6 +124,10 @@
       <Project>{6e2369e3-f419-419a-9994-20294b8a8ca3}</Project>
       <Name>GameLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Player\Player.csproj">
+      <Project>{F0A9A654-5BE0-49E2-AA60-4C05388A7F12}</Project>
+      <Name>Player</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
