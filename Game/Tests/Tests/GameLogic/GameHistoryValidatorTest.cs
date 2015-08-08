@@ -7,7 +7,12 @@ namespace ICFPC2015.Tests.Tests.GameLogic
     public class GameHistoryValidatorTest
     {
         [Test]
-        public void TestValidate()
+        [TestCase("lll", false)]
+        [TestCase("d", false)]
+        [TestCase("k", false)]
+        [TestCase("llllll", true)]
+        [TestCase("lllllll", false)]
+        public void TestValidate(string commands, bool expected)
         {
             var validator = new GameHistoryValidator();
 
@@ -19,11 +24,11 @@ namespace ICFPC2015.Tests.Tests.GameLogic
             });
             var unit = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
             var unit2 = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
-            var game = new Game(board, null, new[] { unit, unit2 }, 0, 0, 0, -1, -1, string.Empty, 0);
+            var unit3 = Unit.Create(new Point(0, 0), new[] { new Point(0, 0), });
+            var game = new Game(board, null, new[] { unit, unit2, unit3 }, 0, 0, 0, -1, -1, string.Empty, 0).TrySpawnNew();
 
-            //validator.Validate(game, "")
-            var actual = game.TrySpawnNew();
-            Assert.AreEqual(GameState.NewIsSpawned, actual.State);
+            var actual = validator.Validate(game, commands);
+            Assert.AreEqual(expected, actual.IsValid);
         }
     }
 }

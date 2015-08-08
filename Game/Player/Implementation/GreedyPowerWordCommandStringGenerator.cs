@@ -38,6 +38,7 @@ namespace ICFPC2015.Player.Implementation
                         if (locked && i < powerWord.Length - 1)
                         {
                             fail = true;
+                            break;
                         }
                     }
                     var allUsedPositions = new HashSet<UnitPosition>(usedPositions.Union(newlyUsedPositions));
