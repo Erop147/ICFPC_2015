@@ -6,32 +6,28 @@ namespace ICFPC2015.Player.Implementation
 {
     public class GreedyPowerWordCommandStringGenerator : ICommandStringGenerator
     {
-        public string Generate(Game game, UnitPosition finishPosition)
+        public string Generate(Board board, GameUnit unit, UnitPosition finishPosition)
         {
             var stringBuilder = new StringBuilder();
-            var powerWords = new string[] {};
-            while (game.State != GameState.GameOver && game.State != GameState.Error)
+            var powerWords = MagicWordsStore.Words;
+            while (!unit.UnitPosition.Equals(finishPosition))
             {
                 foreach (var powerWord in powerWords.OrderByDescending(x => x.Length))
                 {
-                    var currentGame = game;
-                    var fail = false;
+                    var currentUnit = unit;
                     foreach (var command in powerWord)
                     {
-                        if (currentGame.State == GameState.GameOver)
+                        currentUnit = currentUnit.MakeStep(CommandConverter.Convert(command));
+                        if (!board.IsValid(currentUnit))
                         {
-                            fail = true;
-                        }
-                        currentGame = currentGame.TryMakeStep(CommandConverter.Convert(command));
-                        if (currentGame.State == GameState.Error)
-                        {
-                            fail = true;
+                            break;
                         }
                     }
-                    if (!fail)
+                    if (board.IsValid(currentUnit) && ReachableStatesGetter.Get(board, currentUnit).Contains(finishPosition))
                     {
+                        unit = currentUnit;
                         stringBuilder.Append(powerWord);
-                        game = currentGame;
+                        break;
                     }
                 }
             }

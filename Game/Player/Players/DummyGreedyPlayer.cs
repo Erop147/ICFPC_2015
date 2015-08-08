@@ -25,7 +25,7 @@ namespace ICFPC2015.Player.Players
 
                 var finishPosition = bestPositionFinder.FindBest(unitPositions, game);
 
-                var commandString = commandStringGenerator.Generate(game, finishPosition);
+                var commandString = commandStringGenerator.Generate(game.Board, game.Current, finishPosition);
                 stringBuilder.Append(commandString);
 
                 foreach (var command in commandString)
