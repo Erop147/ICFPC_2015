@@ -33,7 +33,8 @@ namespace ICFPC2015.Player.Implementation
                         var locked = !board.IsValid(nextUnit);
                         if (newlyUsedPositions.Contains(nextUnit.UnitPosition) ||
                             usedPositions.Contains(nextUnit.UnitPosition) ||
-                            (locked && i < powerWord.Length - 1))
+                            (locked && i < powerWord.Length - 1) ||
+                            (locked && !nextUnit.UnitPosition.Equals(finishPosition)))
                         {
                             fail = true;
                             break;
@@ -51,6 +52,14 @@ namespace ICFPC2015.Player.Implementation
                         stringBuilder.Append(powerWord);
                         break;
                     }
+                }
+            }
+            foreach (var command in Enum.GetValues(typeof(Command)).Cast<Command>())
+            {
+                if (!board.IsValid(unit.MakeStep(command)))
+                {
+                    stringBuilder.Append(CommandConverter.CovertToAnyChar(command));
+                    break;
                 }
             }
             return stringBuilder.ToString();
