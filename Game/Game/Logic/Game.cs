@@ -38,7 +38,7 @@ namespace ICFPC2015.GameLogic.Logic
                 return GameOver();
             }
 
-            return MoveCurrent(gameUnit);
+            return SpawnedNew(gameUnit);
         }
 
         public Point GetPivotLocation(Unit unit)
@@ -89,6 +89,13 @@ namespace ICFPC2015.GameLogic.Logic
                 return gameWithNewUnit.TrySpawnNew();
             }
             return MoveCurrent(newGameUnit);
+        }
+
+        private GameStepResult SpawnedNew(GameUnit gameUnit)
+        {
+            var game = this;
+            game.Current = gameUnit;
+            return new GameStepResult(game, StepResult.NewIsSpawned);
         }
 
         private GameStepResult MoveCurrent(GameUnit gameUnit)
