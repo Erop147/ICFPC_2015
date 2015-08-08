@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Assemblies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\Assemblies\nunit.framework.dll</HintPath>
     </Reference>
@@ -46,17 +50,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\BoardTest.cs" />
-    <Compile Include="Tests\GameTest.cs" />
-    <Compile Include="Tests\PointTest.cs" />
-    <Compile Include="Tests\RandomGeneratorTest.cs" />
+    <Compile Include="Tests\GameLogic\BoardTest.cs" />
+    <Compile Include="Tests\GameLogic\CommandConverterTest.cs" />
+    <Compile Include="Tests\GameLogic\GameTest.cs" />
+    <Compile Include="Tests\GameLogic\GameUnitTest.cs" />
+    <Compile Include="Tests\GameLogic\InputReaderTest.cs" />
+    <Compile Include="Tests\GameLogic\MagicWordsStoreTest.cs" />
+    <Compile Include="Tests\GameLogic\PointTest.cs" />
+    <Compile Include="Tests\GameLogic\RandomGeneratorTest.cs" />
+    <Compile Include="Tests\Player\ReachableStatesGetterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Game\GameLogic.csproj">
       <Project>{6e2369e3-f419-419a-9994-20294b8a8ca3}</Project>
       <Name>GameLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Player\Player.csproj">
+      <Project>{f0a9a654-5be0-49e2-aa60-4c05388a7f12}</Project>
+      <Name>Player</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="testReader.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

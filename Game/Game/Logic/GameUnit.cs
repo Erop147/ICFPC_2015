@@ -6,24 +6,22 @@ namespace ICFPC2015.GameLogic.Logic
     public class GameUnit
     {
         public Unit Unit { get; private set; }
-        public Point PivotLocation { get; private set; }
-        public int RotationCount { get; private set; }
+        public UnitPosition UnitPosition { get; set; }
 
-        public GameUnit(Unit unit, Point pivotLocation, int rotationCount)
+        public GameUnit(Unit unit, UnitPosition unitPosition)
         {
             Unit = unit;
-            PivotLocation = pivotLocation;
-            RotationCount = rotationCount;
+            UnitPosition = unitPosition;
         }
 
         public Point[] GetAbsolutePoints()
         {
-            return Unit.Points.Select(p => p.Rotate(RotationCount, Unit.PivotPoint) + Unit.PivotPoint + PivotLocation).ToArray();
+            return Unit.Points.Select(p => p.Rotate(UnitPosition.RotationCount, Unit.PivotPoint) + Unit.PivotPoint + UnitPosition.PivotLocation).ToArray();
         }
 
         public GameUnit Clone()
         {
-            return new GameUnit(Unit.Clone(), PivotLocation, RotationCount);
+            return new GameUnit(Unit.Clone(), UnitPosition.Clone());
         }
 
         public GameUnit MakeStep(Command command)
@@ -33,46 +31,50 @@ namespace ICFPC2015.GameLogic.Logic
             {
                 case Command.MoveEast:
                 {
-                    result.PivotLocation += new Point(1, 0);
+                    result.UnitPosition = result.UnitPosition.Move(new Point(1, 0));
                     return result;
                 }
                 case Command.MoveWest:
                 {
-                    result.PivotLocation += new Point(-1, 0);
+                    result.UnitPosition = result.UnitPosition.Move(new Point(-1, 0));
                     return result;
                 }
                 case Command.MoveSouthEast:
                 {
-                    if (result.PivotLocation.Row % 2 == 0)
-                        result.PivotLocation += new Point(0, 1);
+                    if (result.UnitPosition.PivotLocation.Row % 2 == 0)
+                        result.UnitPosition = result.UnitPosition.Move(new Point(0, 1));
                     else
-                        result.PivotLocation += new Point(1, 1);
+                        result.UnitPosition = result.UnitPosition.Move(new Point(1, 1));
                     return result;
                 }
                 case Command.MoveSouthWest:
                 {
-                    if (result.PivotLocation.Row % 2 == 0)
-                        result.PivotLocation += new Point(-1, 1);
+                    if (result.UnitPosition.PivotLocation.Row % 2 == 0)
+                        result.UnitPosition = result.UnitPosition.Move(new Point(-1, 1));
                     else
-                        result.PivotLocation += new Point(0, 1);
+                        result.UnitPosition = result.UnitPosition.Move(new Point(0, 1));
                     return result;
                 }
                 case Command.TurnClockWise:
                 {
-                    result.RotationCount++;
+                    result.UnitPosition = result.UnitPosition.Rotate(1);
                     return result;
                 }
                 case Command.TurnCounterClockWise:
                 {
-                    result.RotationCount--;
+                    result.UnitPosition = result.UnitPosition.Rotate(-1);
                     return result;
                 }
                 default:
                 {
-                    throw new NotImplementedException();
+                    throw new NotImplementedException(string.Format("Command {0} is not implemented", command));
                 }
             }
-            throw new NotImplementedException(string.Format("Command {0} is not implemented", command));
+        }
+
+        public Point BottomLeft()
+        {
+            return GetAbsolutePoints().OrderByDescending(x => x.Row).ThenBy(x => x.Col).First();
         }
     }
 }
