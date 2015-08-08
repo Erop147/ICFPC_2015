@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ICFPC2015.GameLogic.Logic
@@ -8,7 +9,7 @@ namespace ICFPC2015.GameLogic.Logic
         public HistoryValidateResult Validate(Game game, string commands)
         {
             var usedPositions = new Dictionary<int, HashSet<string>>();
-            for (var i = 0; i < game.UnitsSequence.Length; i ++)
+            for (var i = 0; i <= game.UnitsSequence.Length; i ++)
             {
                 usedPositions.Add(i, new HashSet<string>());
             }
@@ -18,14 +19,21 @@ namespace ICFPC2015.GameLogic.Logic
             for (var i = 0; i < commands.Length; i ++)
             {
                 game = game.TryMakeStep(commands[i]);
-                
-                if (game.State == GameState.GameOver && i < commands.Length - 1)
+
+                if (game.State == GameState.GameOver && i != commands.Length - 1)
                 {
                     return new HistoryValidateResult
                     {
                         IsValid = false,
                         WrongMoveNumber = i + 1,
                         Reason = "Game is over"
+                    };
+                }
+                if (game.State == GameState.GameOver && i == commands.Length - 1)
+                {
+                    return new HistoryValidateResult
+                    {
+                        IsValid = true
                     };
                 }
 
@@ -51,11 +59,8 @@ namespace ICFPC2015.GameLogic.Logic
                     Reason = "Game is not over"
                 };
             }
-
-            return new HistoryValidateResult
-            {
-                IsValid = true
-            };
+            
+            throw new Exception("Something strange");
         }
 
         private static void InsertPosition(Dictionary<int, HashSet<string>> usedPositions, Game game)
