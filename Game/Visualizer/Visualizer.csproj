@@ -52,6 +52,7 @@
     </Compile>
     <Compile Include="Hexagon.cs" />
     <Compile Include="HexagonFactory.cs" />
+    <Compile Include="ImageBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
