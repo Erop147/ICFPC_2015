@@ -20,7 +20,7 @@ namespace ICFPC2015.Tests.Tests
                 id = 0,
                 filled = new InputCell[0],
                 sourceLength = 100,
-                units = new InputUnit[]
+                units = new[]
                 {
                     new InputUnit
                     {

@@ -53,6 +53,7 @@
     <Compile Include="Tests\BoardTest.cs" />
     <Compile Include="Tests\InputReaderTest.cs" />
     <Compile Include="Tests\GameTest.cs" />
+    <Compile Include="Tests\MagicWordsStoreTest.cs" />
     <Compile Include="Tests\PointTest.cs" />
     <Compile Include="Tests\RandomGeneratorTest.cs" />
   </ItemGroup>
