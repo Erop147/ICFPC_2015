@@ -1,17 +1,18 @@
 ﻿using System.Text;
 using ICFPC2015.GameLogic.Logic;
 using ICFPC2015.Player.Implementation;
-using System.Linq;
 
 namespace ICFPC2015.Player.Players
 {
-    public class DummyBottomLeftPlayer : IPlayer
+    public class DummyGreedyPlayer : IPlayer
     {
         private readonly ICommandStringGenerator commandStringGenerator;
+        private readonly IBestPositionFinder bestPositionFinder;
 
-        public DummyBottomLeftPlayer(ICommandStringGenerator commandStringGenerator)
+        public DummyGreedyPlayer(ICommandStringGenerator commandStringGenerator, IBestPositionFinder bestPositionFinder)
         {
             this.commandStringGenerator = commandStringGenerator;
+            this.bestPositionFinder = bestPositionFinder;
         }
 
         public string Play(Game game)
@@ -22,11 +23,7 @@ namespace ICFPC2015.Player.Players
             {
                 var unitPositions = ReachableStatesGetter.Get(game.Board, game.Current);
 
-                var finishPosition = unitPositions.Select(x => new {BottomLeft = new GameUnit(game.Current.Unit, x).BottomLeft(), Position = x})
-                                                  .OrderByDescending(x => x.BottomLeft.Row)
-                                                  .ThenBy(x => x.BottomLeft.Col)
-                                                  .First()
-                                                  .Position;
+                var finishPosition = bestPositionFinder.FindBest(unitPositions, game);
 
                 var commandString = commandStringGenerator.Generate(game.Board, game.Current, finishPosition);
                 stringBuilder.Append(commandString);

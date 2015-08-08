@@ -50,7 +50,10 @@
     <Compile Include="Implementation\GreedyPowerWordCommandStringGenerator.cs" />
     <Compile Include="Implementation\ICommandStringGenerator.cs" />
     <Compile Include="Implementation\ReachableStatesGetter.cs" />
-    <Compile Include="Players\DummyBottomLeftPlayer.cs" />
+    <Compile Include="Players\PaverPositionFinder.cs" />
+    <Compile Include="Players\BottomLeftPositionFinder.cs" />
+    <Compile Include="Players\DummyGreedyPlayer.cs" />
+    <Compile Include="Players\IBestPositionFinder.cs" />
     <Compile Include="Players\IPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
