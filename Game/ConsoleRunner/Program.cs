@@ -23,35 +23,15 @@ namespace ICFPC2015.ConsoleRunner
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
+            ParseArguments(args);
+            TimeLimiter.Start(timeLimit);
+            MagicWordsStore.AddWords(powerWords);
+
             players = new[]
             {
                 new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomLeftPositionFinder()),
                 new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new PaverPositionFinder()),
             };
-
-            for (int i = 0; i < args.Length; i ++)
-            {
-                if (args[i] == "-f")
-                {
-                    filenames.Add(args[i + 1]);
-                    i++;
-                }
-                else if (args[i] == "-t")
-                {
-                    timeLimit = TimeSpan.FromSeconds(int.Parse(args[i + 1]));
-                    i++;
-                }
-                else if (args[i] == "-m")
-                {
-                    memoryLimit = int.Parse(args[i + 1]);
-                    i++;
-                }
-                else if (args[i] == "-p")
-                {
-                    powerWords.Add(args[i + 1]);
-                    i++;
-                }
-            }
 
             var outputs = new List<Output>();
             foreach (var filename in filenames)
@@ -90,6 +70,33 @@ namespace ICFPC2015.ConsoleRunner
 
             stopwatch.Stop();
             Console.WriteLine("Done in {0} ms", stopwatch.ElapsedMilliseconds);
+        }
+
+        private static void ParseArguments(string[] args)
+        {
+            for (int i = 0; i < args.Length; i ++)
+            {
+                if (args[i] == "-f")
+                {
+                    filenames.Add(args[i + 1]);
+                    i++;
+                }
+                else if (args[i] == "-t")
+                {
+                    timeLimit = TimeSpan.FromSeconds(int.Parse(args[i + 1]));
+                    i++;
+                }
+                else if (args[i] == "-m")
+                {
+                    memoryLimit = int.Parse(args[i + 1]);
+                    i++;
+                }
+                else if (args[i] == "-p")
+                {
+                    powerWords.Add(args[i + 1]);
+                    i++;
+                }
+            }
         }
 
         private static Task<PlayedGameInfo> Play(Game game, IPlayer player)
