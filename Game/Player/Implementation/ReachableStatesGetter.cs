@@ -7,32 +7,31 @@ namespace ICFPC2015.Player.Implementation
 {
     public static class ReachableStatesGetter
     {
-        public static GameUnit[] Get(Board board, GameUnit unit, bool onlyLocked, HashSet<GameUnit> usedPositions = null)
+        public static GameUnit[] Get(Board board, GameUnit unit, bool onlyLocked, HashSet<GameUnit> usedUnits = null)
         {
-            var newlyUsedPositions = new HashSet<GameUnit>();
-            var lockedPositions = onlyLocked ? new HashSet<GameUnit>() : null;
-            Dfs(board, unit, newlyUsedPositions, usedPositions ?? new HashSet<GameUnit>(), lockedPositions);
+            var newlyUsedUnits = new HashSet<GameUnit>();
+            var lockedUnits = onlyLocked ? new HashSet<GameUnit>() : null;
+            Dfs(board, unit, newlyUsedUnits, usedUnits ?? new HashSet<GameUnit>(), lockedUnits);
 
-            return onlyLocked ? lockedPositions.ToArray() : newlyUsedPositions.ToArray();
+            return onlyLocked ? lockedUnits.ToArray() : newlyUsedUnits.ToArray();
         }
 
-        private static void Dfs(Board board, GameUnit unit, HashSet<GameUnit> newlyUsedPositions, HashSet<GameUnit> previouslyUsedPositions, HashSet<GameUnit> lockedPositions)
+        private static void Dfs(Board board, GameUnit unit, HashSet<GameUnit> newlyUsedUnits, HashSet<GameUnit> previouslyUsedUnits, HashSet<GameUnit> lockedUnits)
         {
-            newlyUsedPositions.Add(unit);
+            newlyUsedUnits.Add(unit);
 
             foreach (var command in Enum.GetValues(typeof(Command)).Cast<Command>().Except(new [] { Command.Empty }))
             {
                 var nextUnit = unit.MakeStep(command);
-                if (!previouslyUsedPositions.Contains(nextUnit) &&
-                    !newlyUsedPositions.Contains(nextUnit))
+                if (!previouslyUsedUnits.Contains(nextUnit) && !newlyUsedUnits.Contains(nextUnit))
                 {
                     if (board.IsValid(nextUnit))
                     {
-                        Dfs(board, nextUnit, newlyUsedPositions, previouslyUsedPositions, lockedPositions);
+                        Dfs(board, nextUnit, newlyUsedUnits, previouslyUsedUnits, lockedUnits);
                     }
-                    else if (lockedPositions != null)
+                    else if (lockedUnits != null)
                     {
-                        lockedPositions.Add(unit);
+                        lockedUnits.Add(unit);
                     }
                 }
             }

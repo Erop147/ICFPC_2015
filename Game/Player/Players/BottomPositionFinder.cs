@@ -7,18 +7,17 @@ namespace ICFPC2015.Player.Players
     {
         public GameUnit FindBest(GameUnit[] gameUnits, Game game)
         {
-            return
-                gameUnits.Select(
-                            x => new
-                                {
-                                    Score = x.GetAbsolutePoints().Sum(point => point.Row*point.Row),
-                                    GameUnit = x,
-                                    BottomLeft = x.BottomLeft()
-                                })
-                         .OrderByDescending(x => x.BottomLeft.Row)
-                         .ThenByDescending(x => x.Score)
-                         .First()
-                         .GameUnit;
+            return gameUnits.Select(x => new
+                                        {
+                                            Score = x.GetAbsolutePoints().Sum(point => point.Row*point.Row),
+                                            GameUnit = x,
+                                            BottomLeft = x.BottomLeft()
+                                        })
+                            .OrderByDescending(x => x.BottomLeft.Row)
+                            .ThenByDescending(x => x.Score)
+                            .ThenBy(x => x.BottomLeft.Col)
+                            .First()
+                            .GameUnit;
         }
     }
 }

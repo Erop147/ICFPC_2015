@@ -21,11 +21,11 @@ namespace ICFPC2015.Player.Players
 
             while (game.State != GameState.GameOver && game.State != GameState.Error)
             {
-                var unitPositions = ReachableStatesGetter.Get(game.Board, game.Current, true);
+                var gameUnits = ReachableStatesGetter.Get(game.Board, game.Current, true);
 
-                var finishPosition = bestPositionFinder.FindBest(unitPositions, game);
+                var finishUnit = bestPositionFinder.FindBest(gameUnits, game);
 
-                var commandString = commandStringGenerator.Generate(game.Board, game.Current, finishPosition);
+                var commandString = commandStringGenerator.Generate(game.Board, game.Current, finishUnit);
                 stringBuilder.Append(commandString);
 
                 foreach (var command in commandString)

@@ -7,7 +7,7 @@ namespace ICFPC2015.Player.Players
     {
         public GameUnit FindBest(GameUnit[] gameUnits, Game game)
         {
-            return gameUnits.Select(x => new {BottomLeft = new GameUnit(game.Current.Unit, x.UnitPosition).BottomLeft(), GameUnit = x})
+            return gameUnits.Select(x => new {BottomLeft = x.BottomLeft(), GameUnit = x})
                             .OrderByDescending(x => x.BottomLeft.Row)
                             .ThenBy(x => x.BottomLeft.Col)
                             .First()
