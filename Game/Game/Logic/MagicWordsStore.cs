@@ -11,11 +11,14 @@ namespace ICFPC2015.GameLogic.Logic
 
         static MagicWordsStore()
         {
-            //var path = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "words.txt");
-            var path = "words.txt";
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var path = assembly.FullName.Contains("ConsoleRunner")
+                ? Path.Combine(Path.GetDirectoryName(assembly.Location), "words.txt")
+                : "words.txt";
+
             using (var reader = new StreamReader(path))
             {
-                var words = reader.ReadToEnd().Split(new [] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                var words = reader.ReadToEnd().Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                 Words = words;
             }
         }
