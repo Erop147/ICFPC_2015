@@ -15,7 +15,7 @@ namespace ICFPC2015.Player.Players
                         Profit = GetScore(x.UnitPosition, game)
                     })
                 .OrderByDescending(x => x.Profit.BusyRows)
-                .ThenByDescending(x => x.Profit.DiverScore + x.Profit.ReachableCount * game.Board.Height * game.Board.Height);
+                .ThenByDescending(x => x.Profit.DiverScore + x.Profit.ReachableCount + x.Profit.DensityScore);
 
             return orderedPositions
                 .First()
@@ -29,6 +29,7 @@ namespace ICFPC2015.Player.Players
             public int BusyRows { get; set; }
             public int DiverScore { get; set; }
             public int ReachableCount { get; set; }
+            public int DensityScore { get; set; }
         }
 
         private Profit GetScore(UnitPosition position, Game game)
@@ -37,14 +38,14 @@ namespace ICFPC2015.Player.Players
             var points = new GameUnit(unit, position).GetAbsolutePoints();
             var board = game.Board.Clone();
 
-            var reachableCount = 0;
+            //var reachableCount = 0;
             foreach (var point in points)
             {
                 board.Fill(point);
-                if (point.Row == 0)
-                {
-                    reachableCount--;
-                }
+                //if (point.Row == 0)
+                //{
+                //    reachableCount--;
+                //}
             }
 
             var diverScore = 0;
@@ -68,14 +69,57 @@ namespace ICFPC2015.Player.Players
                 }
             }
 
-            reachableCount += CountRechable(board);
+            //reachableCount += CountRechable(board);
             
             return new Profit
             {
                 BusyRows = busyCount,
                 DiverScore = diverScore,
-                ReachableCount = reachableCount
+                ReachableCount = 0,//reachableCount
+                DensityScore = CalcDensiry(board)
             };
+        }
+
+        private int CalcDensiry(Board board)
+        {
+            var ret = 0;
+            for (int i = 0; i < board.Height; i ++)
+            {
+                for (int j = 0; j < board.Width; j ++)
+                {
+                    if (board.Field[i][j] == CellState.Free)
+                        continue;
+                    for (int dx = -1; dx <= 1; dx ++)
+                    {
+                        for (int dy = -1; dy <= 1; dy ++)
+                        {
+                            int ni = i + dx, nj = j + dy;
+                            if (0 <= ni && ni < board.Height &&
+                                0 <= nj && nj < board.Width)
+                            {
+                                if (board.Field[ni][nj] == CellState.Free)
+                                    continue;
+                                if (IsNeighbors(j, i, nj, ni))
+                                {
+                                    ret++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return ret;
+        }
+
+        private bool IsNeighbors(int col1, int row1, int col2, int row2)
+        {
+            var point1 = new Point(col1, row1);
+            var point2 = new Point(col2, row2);
+            if (Commands.Any(c => point1.MakeStep(c).Equals(point2.Row, point2.Col)))
+                return true;
+            if (Commands.Any(c => point2.MakeStep(c).Equals(point1.Row, point1.Col)))
+                return true;
+            return false;
         }
 
         private bool[,] used = new bool[1000,1000];
