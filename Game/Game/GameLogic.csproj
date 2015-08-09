@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementation\TimeLimiter.cs" />
     <Compile Include="Logic\Board.cs" />
     <Compile Include="Logic\BoardUpdateResult.cs" />
     <Compile Include="Logic\CellState.cs" />
@@ -71,13 +72,9 @@
     <Compile Include="Logic\UnitPosition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Implementation\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="words.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="words.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

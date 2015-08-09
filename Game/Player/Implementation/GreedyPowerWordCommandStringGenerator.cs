@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ICFPC2015.GameLogic.Implementation;
 using ICFPC2015.GameLogic.Logic;
 
 namespace ICFPC2015.Player.Implementation
@@ -21,8 +22,14 @@ namespace ICFPC2015.Player.Implementation
             var usedUnits = new HashSet<GameUnit>();
             while (!_unit.Equals(_finishUnit))
             {
+                if (TimeLimiter.NeedStop())
+                    break;
+
                 foreach (var powerWord in words.OrderByDescending(x => x.Length))
                 {
+                    if (TimeLimiter.NeedStop())
+                        break;
+
                     var newlyUsedUnits = new HashSet<GameUnit>();
                     var currentUnit = _unit;
                     var fail = false;
@@ -35,7 +42,7 @@ namespace ICFPC2015.Player.Implementation
                         if (newlyUsedUnits.Contains(nextUnit) ||
                             usedUnits.Contains(nextUnit) ||
                             (locked && i < powerWord.Length - 1) ||
-                            (locked && !nextUnit.UnitPosition.Equals(_finishUnit)))
+                            (locked && !nextUnit.Equals(finishUnit)))
                         {
                             fail = true;
                             break;
