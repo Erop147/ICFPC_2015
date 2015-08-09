@@ -88,7 +88,7 @@ namespace ICFPC2015.GameLogic.Logic
 
             var newGameUnit = Current.MakeStep(command);
             var lastSymbols = LastSymbols.Insert(LastSymbols.Length, ch.ToString());
-            if (lastSymbols.Length == 51)
+            if (lastSymbols.Length == 52)
             {
                 lastSymbols = lastSymbols.Substring(1);
             } 
