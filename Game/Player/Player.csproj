@@ -47,10 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementation\DpInfo.cs" />
     <Compile Include="Implementation\DpPowerWordCommandStringGenerator.cs" />
     <Compile Include="Implementation\GreedyPowerWordCommandStringGenerator.cs" />
     <Compile Include="Implementation\ICommandStringGenerator.cs" />
     <Compile Include="Implementation\ReachableStatesGetter.cs" />
+    <Compile Include="Implementation\State.cs" />
     <Compile Include="Players\BottomPositionFinder.cs" />
     <Compile Include="Players\PaverPositionFinder.cs" />
     <Compile Include="Players\BottomLeftPositionFinder.cs" />
