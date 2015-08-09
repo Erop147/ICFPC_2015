@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace ICFPC2015.GameLogic.Logic
 {
@@ -11,10 +12,8 @@ namespace ICFPC2015.GameLogic.Logic
 
         static MagicWordsStore()
         {
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            Console.WriteLine("Assemly name:" + assembly.FullName);
-            var path = assembly.FullName.Contains("ConsoleRunner")
-                ? Path.Combine(Path.GetDirectoryName(assembly.Location), "words.txt")
+            var path = AppDomain.CurrentDomain.SetupInformation.ApplicationName.Contains("ConsoleRunner")
+                ? Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "words.txt")
                 : "words.txt";
 
             using (var reader = new StreamReader(path))
