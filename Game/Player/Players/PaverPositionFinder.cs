@@ -76,11 +76,11 @@ namespace ICFPC2015.Player.Players
                 BusyRows = busyCount,
                 DiverScore = diverScore,
                 ReachableCount = 0,//reachableCount
-                DensityScore = CalcDensiry(board)
+                DensityScore = CalcDensity(board)
             };
         }
 
-        private int CalcDensiry(Board board)
+        private int CalcDensity(Board board)
         {
             var ret = 0;
             for (int i = 0; i < board.Height; i ++)
