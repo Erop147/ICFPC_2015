@@ -88,6 +88,10 @@ namespace ICFPC2015.GameLogic.Logic
 
             var newGameUnit = Current.MakeStep(command);
             var lastSymbols = LastSymbols.Insert(LastSymbols.Length, ch.ToString());
+            if (lastSymbols.Length == 51)
+            {
+                lastSymbols = lastSymbols.Substring(1);
+            } 
             int wordsMask;
             var wordsScore = CalculateWordsScore(lastSymbols, out wordsMask);
 
@@ -97,11 +101,6 @@ namespace ICFPC2015.GameLogic.Logic
                 var updateResult = Board.Place(lockedCells).Update();
                 var additionalScore = CalculateScore(LastUnitLinesCleared, updateResult.RowsCleaned, Current.Unit.Points.Length);
                 
-                if (lastSymbols.Length == 51)
-                {
-                    lastSymbols = lastSymbols.Substring(1);
-                }
-
                 var gameWithNewUnit = new Game(updateResult.NewBoard, null, UnitsSequence, CurrentUnitNumber + 1, updateResult.RowsCleaned, Score + additionalScore + wordsScore, ProblemId, Seed, lastSymbols, wordsMask);
                 return gameWithNewUnit.TrySpawnNew();
             }
