@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ICFPC2015.GameLogic.Logic
@@ -19,7 +20,7 @@ namespace ICFPC2015.GameLogic.Logic
 
             absolutePoints = new Lazy<Point[]>(() => Unit.Points.Select(p => p.Rotate(UnitPosition.RotationCount, Unit.PivotPoint).Move(Unit.PivotPoint, UnitPosition.PivotLocation)).ToArray());
             orderedPoints = new Lazy<Point[]>(() => GetAbsolutePoints().OrderBy(x => x.Col).ThenBy(x => x.Row).Concat(new[] { UnitPosition.PivotLocation }).ToArray());
-            hashCode = new Lazy<int>(() => GetOrderedPoints().Select((x, i) => ((x.Row * 1) ^ (x.Col * 3571)) * i).Aggregate(0, (x, y) => x ^ y));
+            hashCode = new Lazy<int>(() => UnitPosition.PivotLocation.Row ^ (UnitPosition.PivotLocation.Row * 113) ^ (UnitPosition.RotationCount * 157));
         }
 
         public Point[] GetAbsolutePoints()
