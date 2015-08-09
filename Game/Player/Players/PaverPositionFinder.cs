@@ -38,14 +38,9 @@ namespace ICFPC2015.Player.Players
             var points = new GameUnit(unit, position).GetAbsolutePoints();
             var board = game.Board.Clone();
 
-            //var reachableCount = 0;
             foreach (var point in points)
             {
                 board.Fill(point);
-                //if (point.Row == 0)
-                //{
-                //    reachableCount--;
-                //}
             }
 
             var diverScore = 0;
@@ -69,13 +64,10 @@ namespace ICFPC2015.Player.Players
                 }
             }
 
-            //reachableCount += CountRechable(board);
-            
             return new Profit
             {
                 BusyRows = busyCount,
                 DiverScore = diverScore,
-                ReachableCount = 0,//reachableCount
                 DensityScore = CalcDensity(board)
             };
         }
