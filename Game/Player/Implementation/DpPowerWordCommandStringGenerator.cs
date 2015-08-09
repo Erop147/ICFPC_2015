@@ -28,7 +28,7 @@ namespace ICFPC2015.Player.Implementation
             dp = new Dictionary<State, DpInfo>();
 
             var state = new State { IsLocked = false, LastCommand = Command.Empty, Unit = _unit };
-            CalcDp(state);
+            var calcDp = CalcDp(state);
             var stringBuilder = new StringBuilder();
 
             while (!(state.Unit.Equals(target) && state.IsLocked))
@@ -58,109 +58,145 @@ namespace ICFPC2015.Player.Implementation
 
             foreach (var horizontalCommand in HorizontalCommands)
             {
-                var curState = state;
-                var shiftCount = 0;
-                while (true)
+                UpdateHorizontal(state, best, horizontalCommand);
+            }
+
+            return dp[state] = best;
+        }
+
+        private void UpdateHorizontal(State state, DpInfo best, Command horizontalCommand)
+        {
+            var shiftCount = 0;
+            while (true)
+            {
+                foreach (var turningCommand in TurningCommands)
                 {
-                    foreach (var turningCommand in TurningCommands)
+                    UpdateTurning(state, best, horizontalCommand, shiftCount, turningCommand);
+                }
+
+                if (!CanGo(state.LastCommand, horizontalCommand))
+                    break;
+
+                state = MakeStep(state, horizontalCommand);
+                shiftCount++;
+                if (state.IsLocked)
+                {
+                    var cur = CalcDp(state);
+                    if (cur.Value > best.Value)
                     {
-                        var turningUsedGameUnits = new HashSet<GameUnit>();
-                        var curTurningState = curState;
-                        for (int turningCount = 0; turningCount < 6; turningCount++)
+                        best.NextState = state;
+                        best.Value = cur.Value;
+                        best.NextCommand = new NextCommandInfo
                         {
-                            turningUsedGameUnits.Add(curTurningState.Unit);
-                            foreach (var word in words)
-                            {
-                                var newlyUsedGameUnits = new HashSet<GameUnit>();
-                                if (CanGo(curState.LastCommand, word[0]))
-                                {
-                                    var newState = curTurningState;
-                                    DpInfo cur;
-                                    bool fail = false;
-                                    for (int i = 0; i < word.Length; i++)
-                                    {
-                                        newlyUsedGameUnits.Add(newState.Unit);
-                                        newState = MakeStep(newState, word[i]);
-                                        if (!newState.IsLocked && newlyUsedGameUnits.Contains(newState.Unit))
-                                        {
-                                            fail = true;
-                                            break;
-                                        }
-                                        if (newState.IsLocked)
-                                        {
-                                            fail = true;
-                                            cur = CalcDp(newState);
-                                            if (cur.Value > best.Value)
-                                            {
-                                                best.NextState = newState;
-                                                best.Value = cur.Value;
-                                                best.NextCommand = new string(Enumerable.Repeat(CommandConverter.CovertToAnyChar(horizontalCommand), shiftCount).ToArray())
-                                                                + new string(Enumerable.Repeat(CommandConverter.CovertToAnyChar(turningCommand), turningCount).ToArray())
-                                                                + word.Substring(0, i + 1);
-                                            }
-                                            break;
-                                        }
-                                    }
-                                    if (!fail)
-                                    {
-                                        cur = CalcDp(newState);
-                                        if (cur.Value > best.Value)
-                                        {
-                                            best.NextState = newState;
-                                            best.Value = cur.Value;
-                                            best.NextCommand = new string(Enumerable.Repeat(CommandConverter.CovertToAnyChar(horizontalCommand), shiftCount).ToArray())
-                                                            + new string(Enumerable.Repeat(CommandConverter.CovertToAnyChar(turningCommand), turningCount).ToArray())
-                                                            + word;
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (!CanGo(curTurningState.LastCommand, turningCommand))
-                                break;
-
-                            curTurningState = MakeStep(curTurningState, turningCommand);
-
-                            if (!curTurningState.IsLocked && turningUsedGameUnits.Contains(curTurningState.Unit))
-                            {
-                                break;
-                            }
-
-                            if (curTurningState.IsLocked)
-                            {
-                                var cur = CalcDp(curTurningState);
-                                if (cur.Value > best.Value)
-                                {
-                                    best.NextState = curTurningState;
-                                    best.Value = cur.Value;
-                                    best.NextCommand = new string(Enumerable.Repeat(CommandConverter.CovertToAnyChar(horizontalCommand), shiftCount).ToArray())
-                                        + new string(Enumerable.Repeat(CommandConverter.CovertToAnyChar(turningCommand), turningCount).ToArray());
-                                }
-                                break;
-                            }
-                        }
+                            ShiftCommand = horizontalCommand,
+                            ShiftCount = shiftCount
+                        };
                     }
 
-                    if (!CanGo(curState.LastCommand, horizontalCommand))
-                        break;
+                    break;
+                }
+            }
+        }
 
-                    curState = MakeStep(curState, horizontalCommand);
-                    shiftCount++;
-                    if (curState.IsLocked)
+        private void UpdateTurning(State curState, DpInfo best, Command horizontalCommand, int shiftCount, Command turningCommand)
+        {
+            var turningUsedGameUnits = new HashSet<GameUnit>();
+            for (int turningCount = 0; turningCount < 6; turningCount++)
+            {
+                turningUsedGameUnits.Add(curState.Unit);
+                foreach (var word in words)
+                {
+                    UpdateWord(word, curState, best, horizontalCommand, shiftCount, turningCommand, turningCount);
+                }
+
+                if (!CanGo(curState.LastCommand, turningCommand))
+                    break;
+
+                curState = MakeStep(curState, turningCommand);
+
+                if (!curState.IsLocked && turningUsedGameUnits.Contains(curState.Unit))
+                {
+                    break;
+                }
+
+                if (curState.IsLocked)
+                {
+                    var cur = CalcDp(curState);
+                    if (cur.Value > best.Value)
                     {
-                        var cur = CalcDp(curState);
-                        if (cur.Value > best.Value)
+                        best.NextState = curState;
+                        best.Value = cur.Value;
+                        best.NextCommand = new NextCommandInfo
                         {
-                            best.NextState = curState;
-                            best.Value = cur.Value;
-                            best.NextCommand = new string(Enumerable.Repeat(CommandConverter.CovertToAnyChar(horizontalCommand), shiftCount).ToArray());
+                            ShiftCommand = horizontalCommand,
+                            ShiftCount = shiftCount,
+                            TurningCommand = turningCommand,
+                            TurningCount = turningCount,
+                        };
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void UpdateWord(string word, State curState, DpInfo best, Command horizontalCommand, int shiftCount, Command turningCommand, int turningCount)
+        {
+            var newlyUsedGameUnits = new HashSet<GameUnit>();
+            if (CanGo(curState.LastCommand, word[0]))
+            {
+                var newState = curState;
+                DpInfo cur;
+                bool fail = false;
+                for (int i = 0; i < word.Length; i++)
+                {
+                    newlyUsedGameUnits.Add(newState.Unit);
+                    newState = MakeStep(newState, word[i]);
+                    if (!newState.IsLocked && newlyUsedGameUnits.Contains(newState.Unit))
+                    {
+                        fail = true;
+                        break;
+                    }
+                    if (newState.IsLocked)
+                    {
+                        fail = true;
+                        cur = CalcDp(newState);
+                        var len = word.Length > 1 ? word.Length * 2 : 0;
+                        if (cur.Value + len > best.Value)
+                        {
+                            best.NextState = newState;
+                            best.Value = cur.Value + len;
+                            best.NextCommand = new NextCommandInfo
+                            {
+                                ShiftCommand = horizontalCommand,
+                                ShiftCount = shiftCount,
+                                TurningCommand = turningCommand,
+                                TurningCount = turningCount,
+                                Word = word,
+                                WordPrefix = i + 1
+                            };
                         }
                         break;
                     }
                 }
+                if (!fail)
+                {
+                    cur = CalcDp(newState);
+                    if (cur.Value > best.Value)
+                    {
+                        best.NextState = newState;
+                        best.Value = cur.Value;
+                        best.NextCommand = new NextCommandInfo
+                        {
+                            ShiftCommand = horizontalCommand,
+                            ShiftCount = shiftCount,
+                            TurningCommand = turningCommand,
+                            TurningCount = turningCount,
+                            Word = word,
+                            WordPrefix = word.Length
+                        };
+                    }
+                }
             }
-
-            return dp[state] = best;
         }
 
         private bool CanGo(Command lastCommand, char ch)
@@ -173,6 +209,10 @@ namespace ICFPC2015.Player.Implementation
             if (lastCommand == Command.MoveEast && newCommand == Command.MoveWest)
                 return false;
             if (lastCommand == Command.MoveWest && newCommand == Command.MoveEast)
+                return false;
+            if (lastCommand == Command.TurnClockWise && newCommand == Command.TurnCounterClockWise)
+                return false;
+            if (lastCommand == Command.TurnCounterClockWise && newCommand == Command.TurnClockWise)
                 return false;
             return true;
         }
@@ -206,6 +246,7 @@ namespace ICFPC2015.Player.Implementation
             {
                 unchecked
                 {
+
                     var hashCode = (Unit != null ? Unit.GetHashCode() : 0);
                     hashCode = (hashCode * 397) ^ (int) LastCommand;
                     hashCode = (hashCode * 397) ^ IsLocked.GetHashCode();
@@ -225,11 +266,35 @@ namespace ICFPC2015.Player.Implementation
             }
         }
 
-        public struct DpInfo
+        public class DpInfo
         {
             public int Value { get; set; }
             public State NextState { get; set; }
-            public string NextCommand { get; set; }
+            public NextCommandInfo NextCommand { get; set; }
+        }
+
+        public class NextCommandInfo
+        {
+            public Command? ShiftCommand { get; set; }
+            public Command? TurningCommand { get; set; }
+            public int ShiftCount { get; set; }
+            public int TurningCount { get; set; }
+            public string Word { get; set; }
+            public int WordPrefix { get; set; }
+
+            public override string ToString()
+            {
+                return string.Format("{0}{1}{2}",
+                    ShiftCommand.HasValue
+                        ? new string(Enumerable.Repeat(CommandConverter.CovertToAnyChar(ShiftCommand.Value), ShiftCount).ToArray())
+                        : string.Empty,
+                    TurningCommand.HasValue
+                        ? new string(Enumerable.Repeat(CommandConverter.CovertToAnyChar(TurningCommand.Value), TurningCount).ToArray())
+                        : string.Empty,
+                    Word == null
+                        ? string.Empty
+                        : Word.Substring(0, WordPrefix));
+            }
         }
     }
 }
