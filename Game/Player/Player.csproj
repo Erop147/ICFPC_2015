@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementation\DpPowerWordCommandStringGenerator.cs" />
     <Compile Include="Implementation\GreedyPowerWordCommandStringGenerator.cs" />
     <Compile Include="Implementation\ICommandStringGenerator.cs" />
     <Compile Include="Implementation\ReachableStatesGetter.cs" />
