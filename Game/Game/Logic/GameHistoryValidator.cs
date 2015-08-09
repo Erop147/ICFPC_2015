@@ -49,16 +49,6 @@ namespace ICFPC2015.GameLogic.Logic
                 InsertPosition(usedPositions, game);
             }
 
-            if (game.State != GameState.GameOver)
-            {
-                return new HistoryValidateResult
-                {
-                    IsValid = false,
-                    WrongMoveNumber = null,
-                    Reason = "Game is not over"
-                };
-            }
-            
             throw new Exception("Something strange");
         }
 

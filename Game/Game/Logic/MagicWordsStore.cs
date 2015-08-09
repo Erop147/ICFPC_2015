@@ -25,7 +25,14 @@ namespace ICFPC2015.GameLogic.Logic
 
         public static void AddWords(IEnumerable<string> words)
         {
-            Words = Words.Union(words).ToArray();
+            Words = Words.Union(words).Where(IsGood).ToArray();
+        }
+
+        private static bool IsGood(string word)
+        {
+            var anyEmpty = word.Select(CommandConverter.Convert).Any(x => x == Command.Empty);
+            var allHorizontal = word.Select(CommandConverter.Convert).All(x => x == Command.MoveEast || x == Command.MoveWest || x == Command.Empty);
+            return !allHorizontal && !anyEmpty;
         }
     }
 }

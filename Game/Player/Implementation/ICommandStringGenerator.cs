@@ -4,6 +4,6 @@ namespace ICFPC2015.Player.Implementation
 {
     public interface ICommandStringGenerator
     {
-        string Generate(Board board, GameUnit unit, GameUnit finishUnit);
+        string Generate(Board _board, GameUnit _unit, GameUnit _finishUnit);
     }
 }
