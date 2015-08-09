@@ -32,6 +32,37 @@ namespace ICFPC2015.GameLogic.Logic
             return result;
         }
 
+        public Point MakeStep(Command command)
+        {
+            switch (command)
+            {
+                case Command.MoveEast:
+                {
+                    return this + new Point(1, 0);
+                }
+                case Command.MoveWest:
+                {
+                    return this + new Point(-1, 0);
+                }
+                case Command.MoveSouthEast:
+                {
+                    if ((Row & 1) == 0)
+                        return this + new Point(0, 1);
+                    return this + new Point(1, 1);
+                }
+                case Command.MoveSouthWest:
+                {
+                    if ((Row & 1) == 0)
+                        return this + new Point(-1, 1);
+                    return this + new Point(0, 1);
+                }
+                default:
+                {
+                    throw new NotImplementedException(string.Format("Command {0} is not implemented", command));
+                }
+            }
+        }
+
         public Point RotateClockwise(Point pivot)
         {
             var newRow = -pivot.Row - Col + pivot.Col + (pivot.Row + Mod2(pivot.Row) - Row - Mod2(Row)) / 2;

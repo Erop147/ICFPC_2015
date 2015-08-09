@@ -80,18 +80,18 @@ namespace ICFPC2015.Player.Players
             return count;
         }
 
-        private static readonly int[] dx = {-1, 1, 0, 0};
-        private static readonly int[] dy = {0, 0, -1, 1};
+        private static readonly Command[] Commands = {Command.MoveEast, Command.MoveWest, Command.MoveSouthEast, Command.MoveSouthWest};
 
         private int Dfs(int row, int col, bool[,] used, int height, int width)
         {
             if (used[row, col])
                 return 0;
             used[row, col] = true;
-            return Enumerable.Range(0, 4)
-                             .Select(i => new {Row = row + dx[i], Col = col + dy[i]})
-                             .Where(x => CanGo(x.Row, x.Col, used, height, width))
-                             .Sum(x => Dfs(x.Row, x.Col, used, height, width));
+
+            var cur = new Point(col, row);
+            return Commands.Select(cur.MakeStep)
+                           .Where(x => CanGo(x.Row, x.Col, used, height, width))
+                           .Sum(x => Dfs(x.Row, x.Col, used, height, width));
         }
 
         private bool CanGo(int row, int col, bool[,] used, int height, int width)

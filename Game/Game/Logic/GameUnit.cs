@@ -26,48 +26,9 @@ namespace ICFPC2015.GameLogic.Logic
             return absolutePoints.Value;
         }
 
-        public GameUnit Clone()
-        {
-            return new GameUnit(Unit.Clone(), UnitPosition.Clone());
-        }
-
         public GameUnit MakeStep(Command command)
         {
-            switch (command)
-            {
-                case Command.MoveEast:
-                {
-                    return new GameUnit(Unit, UnitPosition.Move(new Point(1, 0)));
-                }
-                case Command.MoveWest:
-                {
-                    return new GameUnit(Unit, UnitPosition.Move(new Point(-1, 0)));
-                }
-                case Command.MoveSouthEast:
-                {
-                    if (UnitPosition.PivotLocation.Row % 2 == 0)
-                        return new GameUnit(Unit, UnitPosition.Move(new Point(0, 1)));
-                    return new GameUnit(Unit, UnitPosition.Move(new Point(1, 1)));
-                }
-                case Command.MoveSouthWest:
-                {
-                    if (UnitPosition.PivotLocation.Row % 2 == 0)
-                        return new GameUnit(Unit, UnitPosition.Move(new Point(-1, 1)));
-                    return new GameUnit(Unit, UnitPosition.Move(new Point(0, 1)));
-                }
-                case Command.TurnClockWise:
-                {
-                    return new GameUnit(Unit, UnitPosition.Rotate(1));
-                }
-                case Command.TurnCounterClockWise:
-                {
-                    return new GameUnit(Unit, UnitPosition.Rotate(-1));
-                }
-                default:
-                {
-                    throw new NotImplementedException(string.Format("Command {0} is not implemented", command));
-                }
-            }
+            return new GameUnit(Unit, UnitPosition.MakeStep(command));
         }
 
         public Point BottomLeft()
