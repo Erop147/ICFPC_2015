@@ -7,6 +7,8 @@ namespace ICFPC2015.Player.Implementation
 {
     public static class ReachableStatesGetter
     {
+        private readonly static IEnumerable<Command> Commands = Enum.GetValues(typeof(Command)).Cast<Command>().Except(new[] { Command.Empty });
+
         public static GameUnit[] Get(Board board, GameUnit unit, bool onlyLocked, HashSet<GameUnit> usedUnits = null)
         {
             var newlyUsedUnits = new HashSet<GameUnit>();
@@ -20,7 +22,7 @@ namespace ICFPC2015.Player.Implementation
         {
             newlyUsedUnits.Add(unit);
 
-            foreach (var command in Enum.GetValues(typeof(Command)).Cast<Command>().Except(new [] { Command.Empty }))
+            foreach (var command in Commands)
             {
                 var nextUnit = unit.MakeStep(command);
                 if (!previouslyUsedUnits.Contains(nextUnit) && !newlyUsedUnits.Contains(nextUnit))

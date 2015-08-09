@@ -8,13 +8,15 @@ namespace ICFPC2015.Player.Implementation
 {
     public class GreedyPowerWordCommandStringGenerator : ICommandStringGenerator
     {
+        private static readonly IEnumerable<string> SpecialWords = Enum.GetValues(typeof (Command))
+                                                       .Cast<Command>()
+                                                       .Select(x => CommandConverter.CovertToAnyChar(x).ToString());
+
         public string Generate(Board board, GameUnit unit, GameUnit finishUnit)
         {
             var stringBuilder = new StringBuilder();
             var words = MagicWordsStore.Words
-                                       .Concat(Enum.GetValues(typeof (Command))
-                                                   .Cast<Command>()
-                                                   .Select(x => CommandConverter.CovertToAnyChar(x).ToString()))
+                                       .Concat(SpecialWords)
                                        .ToArray();
             var usedUnits = new HashSet<GameUnit>();
             while (!unit.Equals(finishUnit))
