@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ICFPC2015.GameLogic.Logic
@@ -77,7 +78,7 @@ namespace ICFPC2015.GameLogic.Logic
             return string.Join(Environment.NewLine, Field.Select(x => string.Join("", x.Select(y => y == CellState.Busy ? "*" : "."))));
         }
 
-        public Board Place(Point[] points)
+        public Board Place(IEnumerable<Point> points)
         {
             var newBoard = Clone();
             foreach (var point in points)

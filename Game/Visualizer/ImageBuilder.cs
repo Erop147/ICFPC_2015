@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using ICFPC2015.GameLogic.Logic;
 using Point = ICFPC2015.GameLogic.Logic.Point;
 
@@ -64,16 +66,9 @@ namespace ICFPC2015.Visualizer
             }
         }
 
-        private bool IsCurrentUnitPoint(Point[] points, int x, int y)
+        private bool IsCurrentUnitPoint(IEnumerable<Point> points, int x, int y)
         {
-            for (var i = 0; i < points.Length; i++)
-            {
-                var point = points[i];
-                if (point.Col == x && point.Row == y)
-                    return true;
-            }
-
-            return false;
+            return points.Any(point => point.Col == x && point.Row == y);
         }
     }
 }

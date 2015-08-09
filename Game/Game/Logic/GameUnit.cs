@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ICFPC2015.GameLogic.Logic
@@ -6,17 +7,23 @@ namespace ICFPC2015.GameLogic.Logic
     public class GameUnit
     {
         public Unit Unit { get; private set; }
-        public UnitPosition UnitPosition { get; set; }
+        public UnitPosition UnitPosition { get; private set; }
+
+        private readonly Lazy<IEnumerable<Point>> absolutePoints;
+        private readonly Lazy<int> hashCode;
 
         public GameUnit(Unit unit, UnitPosition unitPosition)
         {
             Unit = unit;
             UnitPosition = unitPosition;
+
+            absolutePoints = new Lazy<IEnumerable<Point>>(() => Unit.Points.Select(p => p.Rotate(UnitPosition.RotationCount, Unit.PivotPoint).Move(Unit.PivotPoint, UnitPosition.PivotLocation)));
+            hashCode = new Lazy<int>(() => GetOrderedPoints().Select((x, i) => ((x.Row * 1433) ^ (x.Col * 3571)) * i).Aggregate(0, (x, y) => x ^ y));
         }
 
-        public Point[] GetAbsolutePoints()
+        public IEnumerable<Point> GetAbsolutePoints()
         {
-            return Unit.Points.Select(p => p.Rotate(UnitPosition.RotationCount, Unit.PivotPoint).Move(Unit.PivotPoint, UnitPosition.PivotLocation)).ToArray();
+            return absolutePoints.Value;
         }
 
         public GameUnit Clone()
@@ -26,44 +33,35 @@ namespace ICFPC2015.GameLogic.Logic
 
         public GameUnit MakeStep(Command command)
         {
-            var result = Clone();
             switch (command)
             {
                 case Command.MoveEast:
                 {
-                    result.UnitPosition = result.UnitPosition.Move(new Point(1, 0));
-                    return result;
+                    return new GameUnit(Unit, UnitPosition.Move(new Point(1, 0)));
                 }
                 case Command.MoveWest:
                 {
-                    result.UnitPosition = result.UnitPosition.Move(new Point(-1, 0));
-                    return result;
+                    return new GameUnit(Unit, UnitPosition.Move(new Point(-1, 0)));
                 }
                 case Command.MoveSouthEast:
                 {
-                    if (result.UnitPosition.PivotLocation.Row % 2 == 0)
-                        result.UnitPosition = result.UnitPosition.Move(new Point(0, 1));
-                    else
-                        result.UnitPosition = result.UnitPosition.Move(new Point(1, 1));
-                    return result;
+                    if (UnitPosition.PivotLocation.Row % 2 == 0)
+                        return new GameUnit(Unit, UnitPosition.Move(new Point(0, 1)));
+                    return new GameUnit(Unit, UnitPosition.Move(new Point(1, 1)));
                 }
                 case Command.MoveSouthWest:
                 {
-                    if (result.UnitPosition.PivotLocation.Row % 2 == 0)
-                        result.UnitPosition = result.UnitPosition.Move(new Point(-1, 1));
-                    else
-                        result.UnitPosition = result.UnitPosition.Move(new Point(0, 1));
-                    return result;
+                    if (UnitPosition.PivotLocation.Row % 2 == 0)
+                        return new GameUnit(Unit, UnitPosition.Move(new Point(-1, 1)));
+                    return new GameUnit(Unit, UnitPosition.Move(new Point(0, 1)));
                 }
                 case Command.TurnClockWise:
                 {
-                    result.UnitPosition = result.UnitPosition.Rotate(1);
-                    return result;
+                    return new GameUnit(Unit, UnitPosition.Rotate(1));
                 }
                 case Command.TurnCounterClockWise:
                 {
-                    result.UnitPosition = result.UnitPosition.Rotate(-1);
-                    return result;
+                    return new GameUnit(Unit, UnitPosition.Rotate(-1));
                 }
                 default:
                 {
@@ -79,7 +77,7 @@ namespace ICFPC2015.GameLogic.Logic
 
         public override int GetHashCode()
         {
-            return ToCoordinatesString().GetHashCode();
+            return hashCode.Value;
         }
 
         public override bool Equals(object obj)
@@ -87,13 +85,34 @@ namespace ICFPC2015.GameLogic.Logic
             var other = obj as GameUnit;
             if (other == null)
                 return false;
-            return ToCoordinatesString() == other.ToCoordinatesString();
+            if (other.Unit.Points.Length != Unit.Points.Length)
+                return false;
+
+            var pointEnumerator = GetOrderedPoints().GetEnumerator();
+            var otherPointEnumerator = other.GetOrderedPoints().GetEnumerator();
+            for (var i = 0; i < Unit.Points.Length; i ++)
+            {
+                pointEnumerator.MoveNext();
+                otherPointEnumerator.MoveNext(); 
+                
+                var point = pointEnumerator.Current;
+                var otherPoint = otherPointEnumerator.Current;
+                if (!point.Equals(otherPoint.Row, otherPoint.Col))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public string ToCoordinatesString()
         {
-            var points = GetAbsolutePoints();
-            return string.Join(";", points.OrderBy(x => x.Col).ThenBy(x => x.Row).Concat(new[] { UnitPosition.PivotLocation }).Select(x => x.ToString()));
+            return string.Join(";", GetOrderedPoints().Select(x => x.ToString()));
+        }
+
+        private IEnumerable<Point> GetOrderedPoints()
+        {
+            return GetAbsolutePoints().OrderBy(x => x.Col).ThenBy(x => x.Row).Concat(new[] { UnitPosition.PivotLocation });
         }
     }
 }

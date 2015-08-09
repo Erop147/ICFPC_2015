@@ -15,7 +15,7 @@ namespace ICFPC2015.Player.Players
                         Profit = GetScore(x, game)
                     })
                 .OrderByDescending(x => x.Profit.BusyRows)
-                .ThenByDescending(x => x.Profit.DiverScore + x.Profit.ReachableCount * game.Board.Height);
+                .ThenByDescending(x => x.Profit.DiverScore + x.Profit.ReachableCount * game.Board.Height * game.Board.Height);
 
             return orderedPositions
                 .First()
@@ -33,11 +33,6 @@ namespace ICFPC2015.Player.Players
 
         private Profit GetScore(UnitPosition position, Game game)
         {
-            if (position.PivotLocation.Col == 0 && position.PivotLocation.Row == 2)
-            {
-                int xx = -1;
-            }
-
             var unit = game.Current.Unit;
             var points = new GameUnit(unit, position).GetAbsolutePoints();
             var board = game.Board.Clone();

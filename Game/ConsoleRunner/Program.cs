@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using ICFPC2015.GameLogic.Logic;
 using ICFPC2015.GameLogic.Logic.Output;
@@ -20,10 +20,13 @@ namespace ICFPC2015.ConsoleRunner
 
         static void Main(string[] args)
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             players = new[]
             {
                 new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomLeftPositionFinder()),
-                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new PaverPositionFinder()),
+                //new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new PaverPositionFinder()),
             };
 
             for (int i = 0; i < args.Length; i ++)
@@ -84,6 +87,9 @@ namespace ICFPC2015.ConsoleRunner
 
             var result = new OutputWriter().GenWriteString(outputs.ToArray());
             Console.WriteLine(result);
+
+            stopwatch.Stop();
+            Console.WriteLine("Done in {0} ms", stopwatch.ElapsedMilliseconds);
         }
 
         private static Task<PlayedGameInfo> Play(Game game, IPlayer player)

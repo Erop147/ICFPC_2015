@@ -37,7 +37,7 @@ namespace ICFPC2015.GameLogic.Logic
             var newRow = -pivot.Row - Col + pivot.Col + (pivot.Row + Mod2(pivot.Row) - Row - Mod2(Row)) / 2;
             newRow = -newRow;
             var newCol = 2 * pivot.Col + Mod2(pivot.Row) + (Col - pivot.Col) + (3 * pivot.Row - Mod2(pivot.Row) - 3 * Row + Mod2(Row)) / 2;
-            if (newCol % 2 != 0)
+            if ((newCol & 1) != 0)
             {
                 newCol -= Mod2(newCol);
             }
@@ -66,7 +66,7 @@ namespace ICFPC2015.GameLogic.Logic
 
         private static int Mod2(int x)
         {
-            return Math.Abs(x) % 2;
+            return x < 0 ? ((-x) & 1) : (x & 1);
         }
 
         public override string ToString()
