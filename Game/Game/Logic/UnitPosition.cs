@@ -28,7 +28,7 @@
 
         private UnitPosition Rotate(int count)
         {
-            return new UnitPosition(PivotLocation, RotationCount + count);
+            return new UnitPosition(PivotLocation, (RotationCount + count + 6) % 6 );
         }
     }
 }

@@ -46,7 +46,7 @@ namespace ICFPC2015.Player.Implementation
                         }
                     }
                     var allUsedUnits = new HashSet<GameUnit>(usedUnits.Union(newlyUsedUnits));
-                    if (!fail && ReachableStatesGetter.Get(board, currentUnit, false, allUsedUnits).Contains(finishUnit))
+                    if (!fail && ReachableStatesGetter.CanReach(board, currentUnit, false, allUsedUnits, finishUnit))
                     {
                         unit = currentUnit;
                         usedUnits = allUsedUnits;

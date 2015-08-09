@@ -18,7 +18,7 @@ namespace ICFPC2015.GameLogic.Logic
             UnitPosition = unitPosition;
 
             absolutePoints = new Lazy<IEnumerable<Point>>(() => Unit.Points.Select(p => p.Rotate(UnitPosition.RotationCount, Unit.PivotPoint).Move(Unit.PivotPoint, UnitPosition.PivotLocation)));
-            hashCode = new Lazy<int>(() => GetOrderedPoints().Select((x, i) => ((x.Row * 1433) ^ (x.Col * 3571)) * i).Aggregate(0, (x, y) => x ^ y));
+            hashCode = new Lazy<int>(() => GetOrderedPoints().Select((x, i) => ((x.Row * 1) ^ (x.Col * 3571)) * i).Aggregate(0, (x, y) => x ^ y));
         }
 
         public IEnumerable<Point> GetAbsolutePoints()
