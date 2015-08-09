@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using ICFPC2015.GameLogic.Implementation;
 using ICFPC2015.GameLogic.Logic;
 using ICFPC2015.GameLogic.Logic.Output;
 using ICFPC2015.Player.Implementation;
@@ -20,6 +21,7 @@ namespace ICFPC2015.ConsoleRunner
 
         static void Main(string[] args)
         {
+            //TODO прибить перед паблишем
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
@@ -36,9 +38,15 @@ namespace ICFPC2015.ConsoleRunner
             var outputs = new List<Output>();
             foreach (var filename in filenames)
             {
+                if (TimeLimiter.NeedStop())
+                    break;
+
                 var games = new GameBuilder().Build(filename);
                 foreach (var game in games)
                 {
+                    if (TimeLimiter.NeedStop())
+                        break;
+
                     var best = -1;
                     var playerName = string.Empty;
                     var commands = string.Empty;
@@ -68,6 +76,7 @@ namespace ICFPC2015.ConsoleRunner
             var result = new OutputWriter().GenWriteString(outputs.ToArray());
             Console.WriteLine(result);
 
+            //TODO прибить перед паблишем
             stopwatch.Stop();
             Console.WriteLine("Done in {0} ms", stopwatch.ElapsedMilliseconds);
         }

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using ICFPC2015.GameLogic.Implementation;
 using ICFPC2015.GameLogic.Logic;
 using ICFPC2015.Player.Implementation;
 
@@ -21,6 +22,9 @@ namespace ICFPC2015.Player.Players
 
             while (game.State != GameState.GameOver && game.State != GameState.Error)
             {
+                if (TimeLimiter.NeedStop())
+                    break;
+
                 var gameUnits = ReachableStatesGetter.Get(game.Board, game.Current, true);
 
                 var finishUnit = bestPositionFinder.FindBest(gameUnits, game);
@@ -28,8 +32,9 @@ namespace ICFPC2015.Player.Players
                 var commandString = commandStringGenerator.Generate(game.Board, game.Current, finishUnit);
                 stringBuilder.Append(commandString);
 
-                foreach (var command in commandString)
+                for (var i = 0; i < commandString.Length; i++)
                 {
+                    var command = commandString[i];
                     game = game.TryMakeStep(command);
                 }
             }
