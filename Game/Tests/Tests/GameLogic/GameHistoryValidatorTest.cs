@@ -8,7 +8,7 @@ namespace ICFPC2015.Tests.Tests.GameLogic
     public class GameHistoryValidatorTest
     {
         [Test]
-        [TestCase("lll", false)]
+        [TestCase("lll", true)]
         [TestCase("d", false)]
         [TestCase("k", false)]
         [TestCase("llllll", true)]

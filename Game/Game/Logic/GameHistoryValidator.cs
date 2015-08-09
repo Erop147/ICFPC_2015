@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ICFPC2015.GameLogic.Logic
 {
@@ -49,7 +48,7 @@ namespace ICFPC2015.GameLogic.Logic
                 InsertPosition(usedPositions, game);
             }
 
-            throw new Exception("Something strange");
+            return new HistoryValidateResult {IsValid = true};
         }
 
         private static void InsertPosition(Dictionary<int, HashSet<string>> usedPositions, Game game)
