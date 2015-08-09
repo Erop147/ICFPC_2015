@@ -48,6 +48,15 @@
             this.stopExecuteCommandButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.unitNumberLabel = new System.Windows.Forms.Label();
+            this.moveWestButton = new System.Windows.Forms.Button();
+            this.moveEastButton = new System.Windows.Forms.Button();
+            this.moveSouthWestButton = new System.Windows.Forms.Button();
+            this.moveSouthEastButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.nextButton = new System.Windows.Forms.Button();
+            this.previousButton = new System.Windows.Forms.Button();
+            this.turnCounterClockwiseButton = new System.Windows.Forms.Button();
+            this.turnClockwiseButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.boardBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -237,11 +246,109 @@
             this.unitNumberLabel.Size = new System.Drawing.Size(0, 37);
             this.unitNumberLabel.TabIndex = 18;
             // 
+            // moveWestButton
+            // 
+            this.moveWestButton.Location = new System.Drawing.Point(13, 928);
+            this.moveWestButton.Name = "moveWestButton";
+            this.moveWestButton.Size = new System.Drawing.Size(127, 56);
+            this.moveWestButton.TabIndex = 19;
+            this.moveWestButton.Text = "WEST";
+            this.moveWestButton.UseVisualStyleBackColor = true;
+            this.moveWestButton.Click += new System.EventHandler(this.moveWestButton_Click);
+            // 
+            // moveEastButton
+            // 
+            this.moveEastButton.Location = new System.Drawing.Point(314, 928);
+            this.moveEastButton.Name = "moveEastButton";
+            this.moveEastButton.Size = new System.Drawing.Size(142, 56);
+            this.moveEastButton.TabIndex = 22;
+            this.moveEastButton.Text = "EAST";
+            this.moveEastButton.UseVisualStyleBackColor = true;
+            this.moveEastButton.Click += new System.EventHandler(this.moveEastButton_Click);
+            // 
+            // moveSouthWestButton
+            // 
+            this.moveSouthWestButton.Location = new System.Drawing.Point(64, 1096);
+            this.moveSouthWestButton.Name = "moveSouthWestButton";
+            this.moveSouthWestButton.Size = new System.Drawing.Size(142, 56);
+            this.moveSouthWestButton.TabIndex = 23;
+            this.moveSouthWestButton.Text = "SW";
+            this.moveSouthWestButton.UseVisualStyleBackColor = true;
+            this.moveSouthWestButton.Click += new System.EventHandler(this.moveSouthWestButton_Click);
+            // 
+            // moveSouthEastButton
+            // 
+            this.moveSouthEastButton.Location = new System.Drawing.Point(230, 1096);
+            this.moveSouthEastButton.Name = "moveSouthEastButton";
+            this.moveSouthEastButton.Size = new System.Drawing.Size(142, 56);
+            this.moveSouthEastButton.TabIndex = 24;
+            this.moveSouthEastButton.Text = "SE";
+            this.moveSouthEastButton.UseVisualStyleBackColor = true;
+            this.moveSouthEastButton.Click += new System.EventHandler(this.moveSouthEastButton_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(917, 620);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(8, 8);
+            this.button1.TabIndex = 25;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // nextButton
+            // 
+            this.nextButton.Location = new System.Drawing.Point(230, 1180);
+            this.nextButton.Name = "nextButton";
+            this.nextButton.Size = new System.Drawing.Size(226, 56);
+            this.nextButton.TabIndex = 26;
+            this.nextButton.Text = "NEXT";
+            this.nextButton.UseVisualStyleBackColor = true;
+            this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
+            // 
+            // previousButton
+            // 
+            this.previousButton.Location = new System.Drawing.Point(13, 1180);
+            this.previousButton.Name = "previousButton";
+            this.previousButton.Size = new System.Drawing.Size(193, 56);
+            this.previousButton.TabIndex = 27;
+            this.previousButton.Text = "PREV";
+            this.previousButton.UseVisualStyleBackColor = true;
+            this.previousButton.Click += new System.EventHandler(this.previousButton_Click);
+            // 
+            // turnCounterClockwiseButton
+            // 
+            this.turnCounterClockwiseButton.Location = new System.Drawing.Point(96, 1002);
+            this.turnCounterClockwiseButton.Name = "turnCounterClockwiseButton";
+            this.turnCounterClockwiseButton.Size = new System.Drawing.Size(99, 56);
+            this.turnCounterClockwiseButton.TabIndex = 28;
+            this.turnCounterClockwiseButton.Text = "TCCW";
+            this.turnCounterClockwiseButton.UseVisualStyleBackColor = true;
+            this.turnCounterClockwiseButton.Click += new System.EventHandler(this.turnCounterClockwiseButton_Click);
+            // 
+            // turnClockwiseButton
+            // 
+            this.turnClockwiseButton.Location = new System.Drawing.Point(230, 1002);
+            this.turnClockwiseButton.Name = "turnClockwiseButton";
+            this.turnClockwiseButton.Size = new System.Drawing.Size(97, 56);
+            this.turnClockwiseButton.TabIndex = 29;
+            this.turnClockwiseButton.Text = "TCW";
+            this.turnClockwiseButton.UseVisualStyleBackColor = true;
+            this.turnClockwiseButton.Click += new System.EventHandler(this.turnClockwiseButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2154, 1473);
+            this.Controls.Add(this.turnClockwiseButton);
+            this.Controls.Add(this.turnCounterClockwiseButton);
+            this.Controls.Add(this.previousButton);
+            this.Controls.Add(this.nextButton);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.moveSouthEastButton);
+            this.Controls.Add(this.moveSouthWestButton);
+            this.Controls.Add(this.moveEastButton);
+            this.Controls.Add(this.moveWestButton);
             this.Controls.Add(this.unitNumberLabel);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.stopExecuteCommandButton);
@@ -291,5 +398,14 @@
         private System.Windows.Forms.Button stopExecuteCommandButton;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label unitNumberLabel;
+        private System.Windows.Forms.Button moveWestButton;
+        private System.Windows.Forms.Button moveEastButton;
+        private System.Windows.Forms.Button moveSouthWestButton;
+        private System.Windows.Forms.Button moveSouthEastButton;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button nextButton;
+        private System.Windows.Forms.Button previousButton;
+        private System.Windows.Forms.Button turnCounterClockwiseButton;
+        private System.Windows.Forms.Button turnClockwiseButton;
     }
 }

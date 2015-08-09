@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace ICFPC2015.Visualizer
 
         private Game[] games;
         private Game currentGame;
+        private List<Game> gamesHistory;
+        private int historyStepIndex;
         private int commandIndex;
         private string command;
         private bool needStopExecute;
@@ -27,6 +30,10 @@ namespace ICFPC2015.Visualizer
 
         private void DrawBoard()
         {
+            unitNumberLabel.Text = string.Format("{0} of {1}", currentGame.CurrentUnitNumber + 1, currentGame.UnitsSequence.Length);
+            scoresLabel.Text = currentGame.Score.ToString();
+            stateLabel.Text = currentGame.State.ToString();
+
             var multiplier = GetMultiplierValue();
             var imageBuilder = new ImageBuilder();
             var boardImage = imageBuilder.Build(currentGame, multiplier);
@@ -84,6 +91,7 @@ namespace ICFPC2015.Visualizer
         private void gameIndexCombobox_SelectedValueChanged(object sender, EventArgs e)
         {
             currentGame = games[GetGameIndexValue()];
+            gamesHistory = new List<Game>(1000);
             DrawBoard();
         }
 
@@ -105,6 +113,8 @@ namespace ICFPC2015.Visualizer
             {
                 executing = true;
                 commandIndex = 0;
+                historyStepIndex = 0;
+                gamesHistory = new List<Game>(1000);
                 command = commandsTextBox.Text;
                 scoresLabel.Text = 0.ToString();
                 stateLabel.Text = string.Empty;
@@ -118,15 +128,25 @@ namespace ICFPC2015.Visualizer
         private void ExecuteGameStep(object sender, EventArgs eventArgs)
         {
             var commandChar = command[commandIndex];
-            currentGame = currentGame.TryMakeStep(commandChar);
+            ExecuteGameStep(commandChar);
+        }
 
-            unitNumberLabel.Text = string.Format("{0} of {1}", currentGame.CurrentUnitNumber + 1, currentGame.UnitsSequence.Length);
-            scoresLabel.Text = currentGame.Score.ToString();
-            stateLabel.Text = currentGame.State.ToString();
+        private void ExecuteGameStep(char commandChar)
+        {
+            if (gamesHistory.Count == 0)
+                gamesHistory.Add(currentGame);
+
+            currentGame = currentGame.TryMakeStep(commandChar);
 
             DrawBoard();
 
-            if (needStopExecute || commandIndex + 1 == command.Length ||
+            ++historyStepIndex;
+            if (gamesHistory.Count - historyStepIndex == 0)
+                gamesHistory.Add(currentGame);
+            else
+                gamesHistory[historyStepIndex] = currentGame;
+
+            if (needStopExecute || command != null && commandIndex + 1 == command.Length ||
                 currentGame.State == GameState.Error || currentGame.State == GameState.GameOver)
             {
                 timer.Stop();
@@ -151,6 +171,8 @@ namespace ICFPC2015.Visualizer
             scoresLabel.Text = 0.ToString();
             stateLabel.Text = string.Empty;
             currentGame = games[GetGameIndexValue()];
+            historyStepIndex = 0;
+            gamesHistory = new List<Game>(1000);
             executing = false;
             DrawBoard();
         }
@@ -158,6 +180,59 @@ namespace ICFPC2015.Visualizer
         private void stopExecuteCommandButton_Click(object sender, EventArgs e)
         {
             needStopExecute = true;
+        }
+
+        private void moveWestButton_Click(object sender, EventArgs e)
+        {
+            ExecuteGameStep('p');
+        }
+
+        private void moveEastButton_Click(object sender, EventArgs e)
+        {
+            ExecuteGameStep('b');
+        }
+
+        private void moveSouthWestButton_Click(object sender, EventArgs e)
+        {
+            ExecuteGameStep('a');
+        }
+
+        private void moveSouthEastButton_Click(object sender, EventArgs e)
+        {
+            ExecuteGameStep('m');
+        }
+
+        private void turnCounterClockwiseButton_Click(object sender, EventArgs e)
+        {
+            ExecuteGameStep('k');
+        }
+
+        private void turnClockwiseButton_Click(object sender, EventArgs e)
+        {
+            ExecuteGameStep('d');
+        }
+
+        private void previousButton_Click(object sender, EventArgs e)
+        {
+            if (historyStepIndex == 0)
+                return;
+
+            --commandIndex;
+            --historyStepIndex;
+            currentGame = gamesHistory[historyStepIndex];
+            DrawBoard();
+        }
+
+        private void nextButton_Click(object sender, EventArgs e)
+        {
+            if (historyStepIndex + 1 == gamesHistory.Count)
+                return;
+
+
+            ++commandIndex;
+            ++historyStepIndex;
+            currentGame = gamesHistory[historyStepIndex];
+            DrawBoard();
         }
     }
 }
