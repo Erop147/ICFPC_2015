@@ -35,7 +35,7 @@ namespace ICFPC2015.Player.Implementation
                         if (newlyUsedUnits.Contains(nextUnit) ||
                             usedUnits.Contains(nextUnit) ||
                             (locked && i < powerWord.Length - 1) ||
-                            (locked && !nextUnit.UnitPosition.Equals(finishUnit)))
+                            (locked && !nextUnit.Equals(finishUnit)))
                         {
                             fail = true;
                             break;
