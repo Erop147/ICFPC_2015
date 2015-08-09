@@ -2,24 +2,31 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 
 namespace ICFPC2015.GameLogic.Logic
 {
     public static class MagicWordsStore
     {
+        private const string resourceWithNamespace = "ICFPC2015.GameLogic.words.txt";
         public static string[] Words { get; private set; }
 
         static MagicWordsStore()
         {
-            var assembly = System.Reflection.Assembly.GetEntryAssembly();
-            var path = AppDomain.CurrentDomain.SetupInformation.ApplicationName.Contains("ConsoleRunner")
-                ? Path.Combine(Path.GetDirectoryName(assembly.Location), "words.txt")
-                : "words.txt";
-
-            using (var reader = new StreamReader(path))
+            var resourceAssembly = Assembly.GetCallingAssembly();
+            using (var stream = resourceAssembly.GetManifestResourceStream(resourceWithNamespace))
             {
-                var words = reader.ReadToEnd().Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                Words = words;
+                if (stream == null)
+                {
+                    throw new ArgumentOutOfRangeException(string.Format("Can't get resource:{0} from assembly:{1}", resourceWithNamespace, resourceAssembly.FullName));
+                }
+
+                using (var streamReader = new StreamReader(stream, Encoding.UTF8))
+                {
+                    var words = streamReader.ReadToEnd().Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    Words = words;
+                }
             }
         }
 
