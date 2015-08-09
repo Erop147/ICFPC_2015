@@ -14,7 +14,7 @@ namespace ICFPC2015.GameLogic.Logic
 
         static MagicWordsStore()
         {
-            var resourceAssembly = Assembly.GetCallingAssembly();
+            var resourceAssembly = Assembly.GetAssembly(typeof(MagicWordsStore));
             using (var stream = resourceAssembly.GetManifestResourceStream(resourceWithNamespace))
             {
                 if (stream == null)
