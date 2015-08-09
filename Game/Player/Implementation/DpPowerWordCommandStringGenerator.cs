@@ -28,7 +28,7 @@ namespace ICFPC2015.Player.Implementation
             dp = new Dictionary<State, DpInfo>();
 
             var state = new State { IsLocked = false, LastCommand = Command.Empty, Unit = _unit };
-            CalcDp(state);
+            var calcDp = CalcDp(state);
             var stringBuilder = new StringBuilder();
 
             while (!(state.Unit.Equals(target) && state.IsLocked))
@@ -160,11 +160,11 @@ namespace ICFPC2015.Player.Implementation
                     {
                         fail = true;
                         cur = CalcDp(newState);
-                        cur.Value += word.Length > 1 ? word.Length * 2 : 0;
-                        if (cur.Value > best.Value)
+                        var len = word.Length > 1 ? word.Length * 2 : 0;
+                        if (cur.Value + len > best.Value)
                         {
                             best.NextState = newState;
-                            best.Value = cur.Value;
+                            best.Value = cur.Value + len;
                             best.NextCommand = new NextCommandInfo
                             {
                                 ShiftCommand = horizontalCommand,
