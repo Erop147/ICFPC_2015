@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using ICFPC2015.GameLogic.Logic;
 using ICFPC2015.Player.Implementation;
 
