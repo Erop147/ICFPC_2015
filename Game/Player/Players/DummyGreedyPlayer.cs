@@ -34,7 +34,7 @@ namespace ICFPC2015.Player.Players
                 }
             }
 
-            return new PlayedGameInfo(stringBuilder.ToString(), game.Score);
+            return new PlayedGameInfo(stringBuilder.ToString(), game.Score, bestPositionFinder.Name);
         }
     }
 }

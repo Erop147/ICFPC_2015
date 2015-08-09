@@ -13,5 +13,7 @@ namespace ICFPC2015.Player.Players
                             .First()
                             .GameUnit;
         }
+
+        public string Name { get { return "BL"; } }
     }
 }

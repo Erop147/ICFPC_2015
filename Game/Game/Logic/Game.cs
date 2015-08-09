@@ -102,7 +102,7 @@ namespace ICFPC2015.GameLogic.Logic
                     lastSymbols = lastSymbols.Substring(1);
                 }
 
-                var gameWithNewUnit = new Game(updateResult.NewBoard, null, UnitsSequence, CurrentUnitNumber + 1, updateResult.RowsCleaned, Score + additionalScore + wordsScore, ProblemId, Seed, lastSymbols, wordsScore);
+                var gameWithNewUnit = new Game(updateResult.NewBoard, null, UnitsSequence, CurrentUnitNumber + 1, updateResult.RowsCleaned, Score + additionalScore + wordsScore, ProblemId, Seed, lastSymbols, wordsMask);
                 return gameWithNewUnit.TrySpawnNew();
             }
 
