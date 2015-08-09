@@ -24,7 +24,9 @@ namespace ICFPC2015.GameLogic.Logic
 
                 using (var streamReader = new StreamReader(stream, Encoding.UTF8))
                 {
-                    var words = streamReader.ReadToEnd().Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    var words = streamReader.ReadToEnd()
+                        .ToLowerInvariant()
+                        .Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                     Words = words;
                 }
             }
@@ -32,7 +34,7 @@ namespace ICFPC2015.GameLogic.Logic
 
         public static void AddWords(IEnumerable<string> words)
         {
-            Words = Words.Union(words).ToArray();
+            Words = Words.Union(words.Select(w => w.ToLowerInvariant())).ToArray();
         }
     }
 }
