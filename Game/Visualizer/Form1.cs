@@ -120,6 +120,7 @@ namespace ICFPC2015.Visualizer
             var commandChar = command[commandIndex];
             currentGame = currentGame.TryMakeStep(commandChar);
 
+            unitNumberLabel.Text = string.Format("{0} of {1}", currentGame.CurrentUnitNumber + 1, currentGame.UnitsSequence.Length);
             scoresLabel.Text = currentGame.Score.ToString();
             stateLabel.Text = currentGame.State.ToString();
 

@@ -46,6 +46,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.stateLabel = new System.Windows.Forms.Label();
             this.stopExecuteCommandButton = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.unitNumberLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.boardBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -217,11 +219,31 @@
             this.stopExecuteCommandButton.UseVisualStyleBackColor = true;
             this.stopExecuteCommandButton.Click += new System.EventHandler(this.stopExecuteCommandButton_Click);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(30, 894);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(87, 25);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "UNIT №";
+            // 
+            // unitNumberLabel
+            // 
+            this.unitNumberLabel.AutoSize = true;
+            this.unitNumberLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.unitNumberLabel.Location = new System.Drawing.Point(140, 885);
+            this.unitNumberLabel.Name = "unitNumberLabel";
+            this.unitNumberLabel.Size = new System.Drawing.Size(0, 37);
+            this.unitNumberLabel.TabIndex = 18;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2154, 1473);
+            this.Controls.Add(this.unitNumberLabel);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.stopExecuteCommandButton);
             this.Controls.Add(this.stateLabel);
             this.Controls.Add(this.label5);
@@ -267,5 +289,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label stateLabel;
         private System.Windows.Forms.Button stopExecuteCommandButton;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label unitNumberLabel;
     }
 }
