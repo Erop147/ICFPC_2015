@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace ICFPC2015.GameLogic.Logic
@@ -30,7 +31,14 @@ namespace ICFPC2015.GameLogic.Logic
 
         public static Command Convert(char command)
         {
-            return CommandDictionary[command];
+            try
+            {
+                return CommandDictionary[command];
+            }
+            catch (KeyNotFoundException ex)
+            {
+                throw new Exception(((int)command).ToString(), ex);
+            }
         }
 
         public static char CovertToAnyChar(Command command)
