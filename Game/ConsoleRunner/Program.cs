@@ -75,6 +75,8 @@ namespace ICFPC2015.ConsoleRunner
                         }
                     }
 
+                    Console.WriteLine("Score = {0}", best);
+
                     outputs.Add(new Output
                     {
                         tag = playerName,
