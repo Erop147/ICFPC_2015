@@ -92,6 +92,7 @@ namespace ICFPC2015.Player.Implementation
                             ShiftCount = shiftCount
                         };
                     }
+
                     break;
                 }
             }
@@ -159,6 +160,7 @@ namespace ICFPC2015.Player.Implementation
                     {
                         fail = true;
                         cur = CalcDp(newState);
+                        cur.Value += word.Length > 1 ? word.Length * 2 : 0;
                         if (cur.Value > best.Value)
                         {
                             best.NextState = newState;
@@ -207,6 +209,10 @@ namespace ICFPC2015.Player.Implementation
             if (lastCommand == Command.MoveEast && newCommand == Command.MoveWest)
                 return false;
             if (lastCommand == Command.MoveWest && newCommand == Command.MoveEast)
+                return false;
+            if (lastCommand == Command.TurnClockWise && newCommand == Command.TurnCounterClockWise)
+                return false;
+            if (lastCommand == Command.TurnCounterClockWise && newCommand == Command.TurnClockWise)
                 return false;
             return true;
         }
