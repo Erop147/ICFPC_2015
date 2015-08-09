@@ -12,6 +12,7 @@ namespace ICFPC2015.GameLogic.Logic
         static MagicWordsStore()
         {
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            Console.WriteLine(assembly.FullName);
             var path = assembly.FullName.Contains("ConsoleRunner")
                 ? Path.Combine(Path.GetDirectoryName(assembly.Location), "words.txt")
                 : "words.txt";
