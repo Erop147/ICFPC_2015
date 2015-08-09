@@ -5,13 +5,13 @@ namespace ICFPC2015.Player.Players
 {
     public class BottomLeftPositionFinder : IBestPositionFinder
     {
-        public UnitPosition FindBest(UnitPosition[] positions, Game game)
+        public GameUnit FindBest(GameUnit[] gameUnits, Game game)
         {
-            return positions.Select(x => new {BottomLeft = new GameUnit(game.Current.Unit, x).BottomLeft(), Position = x})
+            return gameUnits.Select(x => new {BottomLeft = x.BottomLeft(), GameUnit = x})
                             .OrderByDescending(x => x.BottomLeft.Row)
                             .ThenBy(x => x.BottomLeft.Col)
                             .First()
-                            .Position;
+                            .GameUnit;
         }
 
         public string Name { get { return "BL"; } }

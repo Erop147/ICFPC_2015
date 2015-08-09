@@ -8,33 +8,32 @@ namespace ICFPC2015.Player.Implementation
 {
     public class GreedyPowerWordCommandStringGenerator : ICommandStringGenerator
     {
-        public string Generate(Board board, GameUnit unit, GameUnit finishPosition)
+        public string Generate(Board board, GameUnit unit, GameUnit finishUnit)
         {
             var stringBuilder = new StringBuilder();
-            var words =
-                MagicWordsStore.Words.Concat(
-                    Enum.GetValues(typeof (Command))
-                        .Cast<Command>()
-                        .Select(x => CommandConverter.CovertToAnyChar(x).ToString()))
-                        .ToArray();
-            var usedPositions = new HashSet<GameUnit>();
-            while (!unit.Equals(finishPosition))
+            var words = MagicWordsStore.Words
+                                       .Concat(Enum.GetValues(typeof (Command))
+                                                   .Cast<Command>()
+                                                   .Select(x => CommandConverter.CovertToAnyChar(x).ToString()))
+                                       .ToArray();
+            var usedUnits = new HashSet<GameUnit>();
+            while (!unit.Equals(finishUnit))
             {
                 foreach (var powerWord in words.OrderByDescending(x => x.Length))
                 {
-                    var newlyUsedPositions = new HashSet<GameUnit>();
+                    var newlyUsedUnits = new HashSet<GameUnit>();
                     var currentUnit = unit;
                     var fail = false;
                     for (var i = 0; i < powerWord.Length; ++i)
                     {
                         var command = powerWord[i];
-                        newlyUsedPositions.Add(currentUnit);
+                        newlyUsedUnits.Add(currentUnit);
                         var nextUnit = currentUnit.MakeStep(CommandConverter.Convert(command));
                         var locked = !board.IsValid(nextUnit);
-                        if (newlyUsedPositions.Contains(nextUnit) ||
-                            usedPositions.Contains(nextUnit) ||
+                        if (newlyUsedUnits.Contains(nextUnit) ||
+                            usedUnits.Contains(nextUnit) ||
                             (locked && i < powerWord.Length - 1) ||
-                            (locked && !nextUnit.UnitPosition.Equals(finishPosition)))
+                            (locked && !nextUnit.UnitPosition.Equals(finishUnit)))
                         {
                             fail = true;
                             break;
@@ -44,11 +43,11 @@ namespace ICFPC2015.Player.Implementation
                             currentUnit = nextUnit;
                         }
                     }
-                    var allUsedPositions = new HashSet<GameUnit>(usedPositions.Union(newlyUsedPositions));
-                    if (!fail && ReachableStatesGetter.Get(board, currentUnit, false, allUsedPositions).Contains(finishPosition))
+                    var allUsedUnits = new HashSet<GameUnit>(usedUnits.Union(newlyUsedUnits));
+                    if (!fail && ReachableStatesGetter.Get(board, currentUnit, false, allUsedUnits).Contains(finishUnit))
                     {
                         unit = currentUnit;
-                        usedPositions = allUsedPositions;
+                        usedUnits = allUsedUnits;
                         stringBuilder.Append(powerWord);
                         break;
                     }
