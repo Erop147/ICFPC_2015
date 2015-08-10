@@ -2,9 +2,9 @@
 
 namespace ICFPC2015.GameLogic.Logic
 {
-    public struct Unit
+    public class Unit
     {
-        public Unit(Point[] points, Point pivotPoint) : this()
+        public Unit(Point[] points, Point pivotPoint)
         {
             var row = points.Min(x => x.Row);
             var minCol = points.Min(x => x.Col);
@@ -16,15 +16,6 @@ namespace ICFPC2015.GameLogic.Logic
         public static Unit Create(Point pivotPoint, Point[] points)
         {
             return new Unit(points, pivotPoint);
-        }
-
-        public Unit Clone()
-        {
-            return new Unit
-            {
-                Points = Points.Select(x => x).ToArray(),
-                PivotPoint = PivotPoint
-            };
         }
 
         public Point[] Points { get; private set; }
