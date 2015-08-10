@@ -42,7 +42,7 @@ namespace ICFPC2015.ConsoleRunner
             MagicWordsStore.AddWords(powerWords);
             players = timeLimit == 0 && memoryLimit == 0
                 ? GetOrderedPlayers().ToArray()
-                : GetOrderedPlayers().Take(coresCount).ToArray();
+                : (coresCount == 0 ? GetOrderedPlayers().ToArray() : GetOrderedPlayers().Take(coresCount).ToArray());
 
             var outputs = new List<Output>();
             foreach (var filename in filenames)
