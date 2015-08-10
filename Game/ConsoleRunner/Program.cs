@@ -72,6 +72,7 @@ namespace ICFPC2015.ConsoleRunner
                         }
                     }
 
+                    //TODO прибить при паблише
                     Console.WriteLine("Score = {0}", best);
                     if (!new GameHistoryValidator().Validate(game, commands).IsValid)
                     {
@@ -129,6 +130,8 @@ namespace ICFPC2015.ConsoleRunner
                 if (coresCount == 0)
                 {
                     coresCount = Environment.ProcessorCount;
+                    //TODO прибить при паблише
+                    Console.WriteLine("cores count " + coresCount);
                 }
             }
         }
