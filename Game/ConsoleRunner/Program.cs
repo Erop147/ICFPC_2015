@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ICFPC2015.GameLogic.Implementation;
@@ -32,10 +31,6 @@ namespace ICFPC2015.ConsoleRunner
 
         static void Main(string[] args)
         {
-            //TODO прибить перед паблишем
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
             ParseArguments(args);
 
             TimeLimiter.Start(TimeSpan.FromSeconds(timeLimit));
@@ -72,8 +67,6 @@ namespace ICFPC2015.ConsoleRunner
                         }
                     }
 
-                    //TODO прибить при паблише
-                    Console.WriteLine("Score = {0}", best);
                     if (!new GameHistoryValidator().Validate(game, commands).IsValid)
                     {
                         Console.WriteLine("Not Valid");
@@ -91,10 +84,6 @@ namespace ICFPC2015.ConsoleRunner
 
             var result = new OutputWriter().GenWriteString(outputs.ToArray());
             Console.WriteLine(result);
-
-            //TODO прибить перед паблишем
-            stopwatch.Stop();
-            Console.WriteLine("Done in {0} ms", stopwatch.ElapsedMilliseconds);
         }
 
         private static void ParseArguments(string[] args)
@@ -129,10 +118,21 @@ namespace ICFPC2015.ConsoleRunner
 
                 if (coresCount == 0)
                 {
-                    coresCount = Environment.ProcessorCount;
-                    //TODO прибить при паблише
-                    Console.WriteLine("cores count " + coresCount);
+                    coresCount = GetProcessorsCount();
                 }
+            }
+        }
+
+        private static int GetProcessorsCount()
+        {
+            try
+            {
+                var procCount = Environment.ProcessorCount;
+                return procCount < 0 ? 0 : procCount;
+            }
+            catch (Exception)
+            {
+                return 0;
             }
         }
 
