@@ -31,6 +31,9 @@ namespace ICFPC2015.ConsoleRunner
 
             players = new[]
             {
+                new DummyGreedyPlayer(new DpPowerWordCommandStringGenerator(), new BottomLeftPositionFinder()),
+                new DummyGreedyPlayer(new DpPowerWordCommandStringGenerator(), new BottomPositionFinder()),
+                new DummyGreedyPlayer(new DpPowerWordCommandStringGenerator(), new PaverPositionFinder()),
                 new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomLeftPositionFinder()),
                 new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomPositionFinder()),
                 new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new PaverPositionFinder()),
@@ -65,6 +68,10 @@ namespace ICFPC2015.ConsoleRunner
                     }
 
                     Console.WriteLine("Score = {0}", best);
+                    if (!new GameHistoryValidator().Validate(game, commands).IsValid)
+                    {
+                        Console.WriteLine("Not Valid");
+                    }
 
                     outputs.Add(new Output
                     {

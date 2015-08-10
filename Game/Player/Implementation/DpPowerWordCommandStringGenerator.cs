@@ -28,7 +28,7 @@ namespace ICFPC2015.Player.Implementation
             words = MagicWordsStore.Words.Concat(SpecialWords).OrderByDescending(x => x.Length).ToArray();
             dp = new Dictionary<State, DpInfo>();
 
-            var state = new State(_unit, Command.Empty, false, true);
+            var state = new State(_unit, Command.Empty, false, true, null);
             CalcDp(state);
             var stringBuilder = new StringBuilder();
 
@@ -64,7 +64,7 @@ namespace ICFPC2015.Player.Implementation
                     var word = CommandConverter.CovertToAnyChar(command).ToString();
                     if (!CanMove(state.Unit, word, out nextUnit))
                     {
-                        return dp[state] = new DpInfo(0, new State(state.Unit, command, true, true), word, 0);
+                        return dp[state] = new DpInfo(0, new State(state.Unit, command, true, true, false), word, 0);
                     }
                 }
                 return dp[state] = new DpInfo(-1, null, string.Empty, 0);
@@ -78,9 +78,9 @@ namespace ICFPC2015.Player.Implementation
                 foreach (var word in words)
                 {
                     GameUnit nextUnit;
-                    if (AvailablePair(state.LastCommand, CommandConverter.Convert(word.First())) && CanMove(state.Unit, word, out nextUnit))
+                    if (AvailablePair(state.LastCommand, state.IsLastCommandWord, CommandConverter.Convert(word.First()), word.Length > 1) && CanMove(state.Unit, word, out nextUnit))
                     {
-                        var nextState = new State(nextUnit, CommandConverter.Convert(word.Last()), false, true);
+                        var nextState = new State(nextUnit, CommandConverter.Convert(word.Last()), false, true, word.Length > 1);
                         var dpInfo = CalcDp(nextState);
                         if (dpInfo.Value < 0)
                         {
@@ -98,16 +98,16 @@ namespace ICFPC2015.Player.Implementation
                 return dp[state] = best;
             }
 
-            var result = CalcDp(new State(state.Unit, state.LastCommand, state.IsLocked, false));
+            var result = CalcDp(new State(state.Unit, state.LastCommand, state.IsLocked, false, state.IsLastCommandWord));
             dp[state] = result;
 
             foreach (var horizontalWord in HorizontalWords)
             {
                 //ответ для некоторых элементов компоненты сильной связанности может быть меньше, чем надо. Может еще допилю. Вдруг не критично
                 GameUnit nextUnit;
-                if (AvailablePair(state.LastCommand, CommandConverter.Convert(horizontalWord.First())) && CanMove(state.Unit, horizontalWord, out nextUnit))
+                if (AvailablePair(state.LastCommand, state.IsLastCommandWord, CommandConverter.Convert(horizontalWord.First()), false) && CanMove(state.Unit, horizontalWord, out nextUnit))
                 {
-                    var nextState = new State(nextUnit, CommandConverter.Convert(horizontalWord.Last()), false, true);
+                    var nextState = new State(nextUnit, CommandConverter.Convert(horizontalWord.Last()), false, true, false);
                     var dpInfo = CalcDp(nextState);
                     if (dpInfo.Value < 0)
                     {
@@ -125,12 +125,26 @@ namespace ICFPC2015.Player.Implementation
             return dp[state] = result;
         }
 
-        private bool AvailablePair(Command lastCommand, Command newCommand)
+        private bool AvailablePair(Command lastCommand, bool? isLastCommandWord, Command newCommand, bool? isNewCommandWord)
         {
             if (lastCommand == Command.MoveEast && newCommand == Command.MoveWest) return false;
             if (lastCommand == Command.MoveWest && newCommand == Command.MoveEast) return false;
             if (lastCommand == Command.TurnClockWise && newCommand == Command.TurnCounterClockWise) return false;
             if (lastCommand == Command.TurnCounterClockWise && newCommand == Command.TurnClockWise) return false;
+            if (isLastCommandWord.HasValue
+                && isLastCommandWord.Value
+                && (lastCommand == Command.MoveEast || lastCommand == Command.MoveWest || lastCommand == Command.TurnClockWise || lastCommand == Command.TurnCounterClockWise)
+                && (newCommand == Command.MoveEast || newCommand == Command.MoveWest || newCommand == Command.TurnClockWise || newCommand == Command.TurnCounterClockWise))
+            {
+                return false;
+            }
+            if (isNewCommandWord.HasValue
+                && isNewCommandWord.Value
+                && (lastCommand == Command.MoveEast || lastCommand == Command.MoveWest || lastCommand == Command.TurnClockWise || lastCommand == Command.TurnCounterClockWise)
+                && (newCommand == Command.MoveEast || newCommand == Command.MoveWest || newCommand == Command.TurnClockWise || newCommand == Command.TurnCounterClockWise))
+            {
+                return false;
+            }
             return true;
         }
 
