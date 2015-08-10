@@ -13,11 +13,22 @@ namespace ICFPC2015.ConsoleRunner
 {
     public class Program
     {
-        private static TimeSpan timeLimit;
+        private static int timeLimit;
         private static int memoryLimit;
+        private static int coresCount;
         private static readonly List<string> filenames = new List<string>();
         private static readonly List<string> powerWords = new List<string>();
         private static IPlayer[] players;
+
+        private static IEnumerable<IPlayer> GetOrderedPlayers()
+        {
+            yield return new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new PaverPositionFinder());
+            yield return new DummyGreedyPlayer(new DpPowerWordCommandStringGenerator(), new PaverPositionFinder());
+            yield return new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomPositionFinder());
+            yield return new DummyGreedyPlayer(new DpPowerWordCommandStringGenerator(), new BottomPositionFinder());
+            yield return new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomLeftPositionFinder());
+            yield return new DummyGreedyPlayer(new DpPowerWordCommandStringGenerator(), new BottomLeftPositionFinder());
+        }
 
         static void Main(string[] args)
         {
@@ -26,18 +37,12 @@ namespace ICFPC2015.ConsoleRunner
             stopwatch.Start();
 
             ParseArguments(args);
-            TimeLimiter.Start(timeLimit);
-            MagicWordsStore.AddWords(powerWords);
 
-            players = new[]
-            {
-                new DummyGreedyPlayer(new DpPowerWordCommandStringGenerator(), new BottomLeftPositionFinder()),
-                new DummyGreedyPlayer(new DpPowerWordCommandStringGenerator(), new BottomPositionFinder()),
-                new DummyGreedyPlayer(new DpPowerWordCommandStringGenerator(), new PaverPositionFinder()),
-                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomLeftPositionFinder()),
-                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new BottomPositionFinder()),
-                new DummyGreedyPlayer(new GreedyPowerWordCommandStringGenerator(), new PaverPositionFinder()),
-            };
+            TimeLimiter.Start(TimeSpan.FromSeconds(timeLimit));
+            MagicWordsStore.AddWords(powerWords);
+            players = timeLimit == 0 && memoryLimit == 0
+                ? GetOrderedPlayers().ToArray()
+                : GetOrderedPlayers().Take(coresCount).ToArray();
 
             var outputs = new List<Output>();
             foreach (var filename in filenames)
@@ -102,7 +107,7 @@ namespace ICFPC2015.ConsoleRunner
                 }
                 else if (args[i] == "-t")
                 {
-                    timeLimit = TimeSpan.FromSeconds(int.Parse(args[i + 1]));
+                    timeLimit = int.Parse(args[i + 1]);
                     i++;
                 }
                 else if (args[i] == "-m")
@@ -114,6 +119,16 @@ namespace ICFPC2015.ConsoleRunner
                 {
                     powerWords.Add(args[i + 1]);
                     i++;
+                }
+                else if (args[i] == "-c")
+                {
+                    coresCount = int.Parse(args[i + 1]);
+                    i++;
+                }
+
+                if (coresCount == 0)
+                {
+                    coresCount = Environment.ProcessorCount;
                 }
             }
         }
